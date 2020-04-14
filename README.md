@@ -31,7 +31,7 @@ composer require tbclla/laravel-revolut-business
 
 ### Service Provider & Facade
 
-If you are using Laravel 5.4 or earlier, or have disabled auto-discovery, add the service provider and facade to your `config/app.php`.
+If you have disabled auto-discovery, add the service provider and facade to your `config/app.php`.
 
 ```php
 'providers' => [

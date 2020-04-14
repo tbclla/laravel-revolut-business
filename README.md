@@ -1,7 +1,7 @@
 <!-- @format -->
 
 [![Build Status](https://travis-ci.com/tbclla/laravel-revolut-business.svg?branch=master)](https://travis-ci.com/tbclla/laravel-revolut-business)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/tbclla/laravel-revolut/badges/quality-score.png?b=master&s=58f63a9ea89be4cc73d481cfb4935d32c4462913)](https://scrutinizer-ci.com/g/tbclla/laravel-revolut/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/tbclla/laravel-revolut-business/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/tbclla/laravel-revolut-business/?branch=master)
 
 # Laravel-Revolut (Business)
 

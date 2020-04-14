@@ -15,6 +15,11 @@ Read [Revolut's documentation](https://revolut-engineering.github.io/api-docs/bu
 
 ⚠️ **Please use a [sandbox account](https://sandbox-business.revolut.com/signup) when setting up this package, and only switch to your real-world account once you're happy that everything is working correclty.**
 
+## Requirements
+
+- Laravel >=5.8
+- PHP >=7.2
+
 ### Installation
 
 Pull this package in through composer.

@@ -64,7 +64,7 @@ class JWTCommand extends Command
             return $clientAssertion->build();
         } catch (ConfigurationException $e) {
             $this->error($e->getMessage());
-            exit;
+            return;
         }
     }
 

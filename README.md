@@ -1,5 +1,6 @@
 <!-- @format -->
-
+[![Latest Stable Version](https://poser.pugx.org/tbclla/laravel-revolut-business/v/stable)](https://packagist.org/packages/tbclla/laravel-revolut-business)
+[![License](https://poser.pugx.org/tbclla/laravel-revolut-business/license)](https://packagist.org/packages/tbclla/laravel-revolut-business)
 [![Build Status](https://travis-ci.com/tbclla/laravel-revolut-business.svg?branch=master)](https://travis-ci.com/tbclla/laravel-revolut-business)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/tbclla/laravel-revolut-business/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/tbclla/laravel-revolut-business/?branch=master)
 
@@ -20,7 +21,7 @@ Pull this package in through composer.
 This package will also pull in [firebase/php-jwt](https://github.com/firebase/php-jwt) and [guzzlehttp/guzzle](https://github.com/guzzle/guzzle).
 
 ```
-composer require tbclla/laravel-revolut
+composer require tbclla/laravel-revolut-business
 ```
 
 ### Service Provider & Facade

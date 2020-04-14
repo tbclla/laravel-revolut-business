@@ -1,6 +1,6 @@
 {
-	"name": "tbclla/laravel-revolut",
-	"description": "Laravel package to access Revolut's Business API",
+	"name": "tbclla/laravel-revolut-business",
+	"description": "An unofficial Laravel wrapper for Revolut's Open API for Business",
 	"license": "MIT",
 	"require": {
 		"firebase/php-jwt": "^5.2",

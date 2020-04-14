@@ -14,7 +14,7 @@ class CreateRevolutTokensTable extends Migration
     public function up()
     {
         Schema::create(config('revolut.tokens_table'), function (Blueprint $table) {
-			$table->unsignedBigInteger('id');
+			$table->bigIncrements('id');
 			$table->string('type');
             $table->mediumText('value');
             $table->boolean('is_encrypted')->default(false);

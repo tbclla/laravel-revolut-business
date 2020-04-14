@@ -1,0 +1,27 @@
+{
+	"name": "tbclla/laravel-revolut",
+	"description": "Laravel package to access Revolut's Business API",
+	"license": "MIT",
+	"require": {
+		"firebase/php-jwt": "^5.2",
+		"guzzlehttp/guzzle": "^6.5"
+	},
+	"autoload": {
+		"psr-4": {
+			"tbclla\\Revolut\\": "src/"
+		}
+	},
+	"extra": {
+		"laravel": {
+			"providers": [
+				"tbclla\\Revolut\\Providers\\RevolutServiceProvider"
+			],
+			"aliases": {
+				"Revolut": "tbclla\\Revoulut\\Facades\\Revolut"
+			}
+		}
+	},
+	"require-dev": {
+		"orchestra/testbench": "^5.1"
+	}
+}

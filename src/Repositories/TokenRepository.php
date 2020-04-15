@@ -4,7 +4,6 @@ namespace tbclla\Revolut\Repositories;
 
 use tbclla\Revolut\Auth\AccessToken;
 use tbclla\Revolut\Auth\RefreshToken;
-use tbclla\Revolut\Auth\State;
 
 class TokenRepository
 {
@@ -26,16 +25,6 @@ class TokenRepository
 	public function getRefreshToken()
 	{
 		return RefreshToken::orderBy('id', 'desc')->first();
-	}
-
-	/**
-	 * Get the latest State
-	 *
-	 * @return null|\tbclla\Revolut\Auth\State
-	 */
-	public function getState()
-	{
-		return State::active()->orderBy('id', 'desc')->first();
 	}
 
 	/**
@@ -62,29 +51,5 @@ class TokenRepository
 		return RefreshToken::create([
 			'value' => $value
 		]);
-	}
-
-	/**
-	 * Create a new Oauth state token
-	 *
-	 * @param string $value
-	 * @return \tbclla\Revolut\Auth\State
-	 */
-	public function createState(string $value)
-	{
-		return State::create([
-			'value' => $value
-		]);
-	}
-
-	/**
-	 * Delete a state
-	 *
-	 * @param \tbclla\Revolut\Auth\State $state
-	 * @return void
-	 */
-	public function deleteState(State $state)
-	{
-		$state->delete();
 	}
 }

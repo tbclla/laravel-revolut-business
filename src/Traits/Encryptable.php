@@ -13,7 +13,7 @@ trait Encryptable
 	 */
 	public static function bootEncryptable()
 	{
-		static::saving(function ($model) {
+		static::saving(function($model) {
 			if (config('revolut.encrypt_tokens', true)) {
 				$model->is_encrypted = true;
 				$model->value = $model->encryptValue();

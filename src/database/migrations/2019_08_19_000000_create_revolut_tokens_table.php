@@ -13,7 +13,7 @@ class CreateRevolutTokensTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('revolut.tokens_table'), function (Blueprint $table) {
+        Schema::create(config('revolut.tokens_table'), function(Blueprint $table) {
 			$table->bigIncrements('id');
 			$table->string('type');
             $table->mediumText('value');

@@ -20,7 +20,7 @@ class AuthorizationController extends Controller
 		}
 
 		// if the state doesn't match the latest state, abort
-		if($tokenManager->getState()->value != request('state')) {
+		if ($tokenManager->getState()->value != request('state')) {
 			abort(405, 'Invalid State');
 		}
 

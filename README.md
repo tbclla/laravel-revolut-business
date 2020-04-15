@@ -617,6 +617,20 @@ $url = route('revolut-authorize', ['after_success' => route('home')]);
 return redirect($url);
 ```
 
+To redirect a user to the authorization flow whenever your app is not authorized, you can catch an `AppUnauthorizedException`, which is thrown when there is no valid refresh token available and your app needs to be re-authorized.
+
+```php
+use tbclla\Revolut\Exceptions\AppUnauthorizedException;
+
+Route::get('/accounts', function () {
+    try {
+        return Revolut::account()->all();
+    } catch(AppUnauthorizedException $e) {
+        return redirect(route('revolut-authorization', ['after_success' => '/accounts']));
+    }
+});
+```
+
 ## Cleaning up expired tokens
 
 To clean up your database and delete any expired access tokens, refresh tokens and Oauth state tokens, you can use the below artisan command.

@@ -202,5 +202,5 @@ class Client
 	public static function generateRequestId()
 	{
 		return (string) Str::Uuid();
-    }
+	}
 }

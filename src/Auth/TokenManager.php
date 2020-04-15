@@ -70,6 +70,24 @@ class TokenManager
 	}
 
 	/**
+	 * Validate a string against the most recent state
+	 *
+	 * @param string $received The received state value
+	 * @return bool
+	 */
+	public function validateState(string $received)
+	{
+		if ($actual = $this->getState()) {
+			if ($actual->value === $received) {
+				$this->tokenRepository->deleteState($actual);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Exchange a refresh token for a new access token
 	 *
 	 * @return \tbclla\Revolut\Auth\AccessToken

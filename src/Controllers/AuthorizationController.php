@@ -19,14 +19,14 @@ class AuthorizationController extends Controller
 			abort(405, 'Invalid Request');
 		}
 
-		// if the state doesn't match the latest state, abort
-		if ($tokenManager->getState()->value != request('state')) {
+		// if the state does not match the latest expected state, abort
+		if (!$tokenManager->validateState(request('state'))) {
 			abort(405, 'Invalid State');
 		}
 
 		$authCode = new AuthorizationCode(request('code'));
 		$tokenManager->requestAccessToken($authCode);
 
-		return response('Authorization successful', 200);
+		return response('Authorization successfull', 200);
 	}
 }

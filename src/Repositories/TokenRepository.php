@@ -76,4 +76,15 @@ class TokenRepository
 			'value' => $value
 		]);
 	}
+
+	/**
+	 * Delete a state
+	 *
+	 * @param \tbclla\Revolut\Auth\State $state
+	 * @return void
+	 */
+	public function deleteState(State $state)
+	{
+		$state->delete();
+	}
 }

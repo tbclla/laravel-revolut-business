@@ -21,21 +21,11 @@ class State extends Token implements PersistableToken
 	 */
 	const TTL = 5;
 
-	/**
-	 * Get the type of the token
-	 *
-	 * @return string
-	 */
 	public static function getType()
 	{
 		return self::TYPE;
 	}
 
-	/**
-	 * Get the expiration date
-	 *
-	 * @return \Carbon\Carbon
-	 */
 	public static function getExpiration()
 	{
 		return now()->addMinutes(self::TTL);

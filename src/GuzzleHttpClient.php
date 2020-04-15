@@ -9,63 +9,49 @@ use tbclla\Revolut\Interfaces\MakesHttpRequests;
 
 class GuzzleHttpClient implements MakesHttpRequests
 {
+	/**
+	 * @var \GuzzleHttp\Client
+	 */
 	private $client;
 
+	/**
+	 * @return void
+	 */
 	public function __construct()
 	{
 		$this->client = new Client();
 	}
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $url
-	 * @param array $options
-	 * @return array
-	 */
 	public function post(string $url, array $options = [])
 	{
 		return $this->send('POST', $url, $options);
 	}
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $url
-	 * @param array $options
-	 * @return array|null
-	 */
 	public function get(string $url, array $options = [])
 	{
 		return $this->send('GET', $url, $options);
 	}
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $url
-	 * @param array $options
-	 * @return void
-	 */
 	public function delete(string $url, array $options = []) : void
 	{
 		$this->send('DELETE', $url, $options);
 	}
 
 	/**
-	 * Undocumented function
-	 *
-	 * @param string $method
-	 * @param string $url
-	 * @param array $options
-	 * @return array|null
+	 * Perform a request
+	 * 
+	 * @param string $method The request method
+	 * @param string $url The request url
+	 * @param array $options The request options
+	 * @return array|null The response body
+	 * @throws \tbclla\Revolut\Exceptions\ApiException API returned a 4xx or 5xx response code
 	 */
 	private function send(string $method, string $url, array $options)
 	{
 		try {
 			$response = $this->client->request($method, $url, $options);
 		} catch (BadResponseException $e) {
-			throw new ApiException('Failed to request access token. ' . $e->getResponse()->getBody(), $e->getCode(), $e);
+			throw new ApiException($e->getMessage(), $e->getCode(), $e);
 		}
 
 		return json_decode($response->getBody(), true);

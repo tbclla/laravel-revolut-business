@@ -15,10 +15,7 @@ class Payment extends Resource implements Buildable
 	const ENDPOINT = '/pay';
 
 	/**
-     * Create a payment
      * @see https://revolut-engineering.github.io/api-docs/business-api/#payments-create-payment Official API documentation
-     * @param array $json The request parameters
-     * @return array
      */
     public function create(array $json)
     {
@@ -51,8 +48,6 @@ class Payment extends Resource implements Buildable
     }
 
     /**
-     * Build the payment request options
-     * 
      * @return \tbclla\Revolut\Builders\PaymentBuilder
      */
     public function build()

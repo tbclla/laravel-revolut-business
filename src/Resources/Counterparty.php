@@ -15,10 +15,7 @@ class Counterparty extends Resource implements Buildable
 	const ENDPOINT = '/counterparty';
 
 	/**
-	 * Create a new counterparty
-	 * 
-	 * @var array $json The request parameters
-	 * @return array
+	 * @see https://revolut-engineering.github.io/api-docs/business-api/#counterparties-add-revolut-counterparty Official API documentation
 	 */
 	public function create(array $json)
     {
@@ -61,10 +58,8 @@ class Counterparty extends Resource implements Buildable
 	}
 
 	/**
-     * Build the counterparty request options
-     * 
-     * @return \tbclla\Revolut\Builders\CounterpartyBuilder
-     */
+	 * @return \tbclla\Revolut\Builders\CounterpartyBuilder
+	 */
 	public function build()
 	{
 		return new CounterpartyBuilder($this);

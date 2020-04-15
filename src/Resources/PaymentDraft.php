@@ -15,11 +15,7 @@ class PaymentDraft extends Resource implements Buildable
 	const ENDPOINT = '/payment-drafts';
 
 	/**
-	 * Create a payment draft
-	 * 
 	 * @see https://revolut-engineering.github.io/api-docs/business-api/#payment-drafts-create-a-payment-draft Official API documentation
-	 * @param array $json The request parameters
-	 * @return array
 	 */
 	public function create(array $json)
 	{
@@ -62,8 +58,6 @@ class PaymentDraft extends Resource implements Buildable
 	}
 
 	/**
-     * Build the payment draft request options
-     * 
      * @return \tbclla\Revolut\Builders\PaymentDraftBuilder
      */
 	public function build()

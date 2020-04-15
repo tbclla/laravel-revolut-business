@@ -15,11 +15,7 @@ class Exchange extends Resource implements Buildable
 	const ENDPOINT = '/exchange';
 
 	/**
-	 * Create an exchange
-	 * 
 	 * @see https://revolut-engineering.github.io/api-docs/business-api/#exchanges-exchange-currency Official API documentation
-	 * @param array $json The request parameters
-	 * @return array
 	 */
 	public function create(array $json)
 	{
@@ -27,8 +23,6 @@ class Exchange extends Resource implements Buildable
 	}
 
 	/**
-     * Build the exchange request options
-     * 
      * @return \tbclla\Revolut\Builders\ExchangeBuilder
      */
 	public function build()

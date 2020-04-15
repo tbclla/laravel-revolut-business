@@ -23,31 +23,16 @@ class AuthorizationCode implements GrantsAccessTokens
 		$this->value = $value;
 	}
 
-	/**
-	 * Get the token value
-	 *
-	 * @return string
-	 */
 	public function getValue()
 	{
 		return $this->value;
 	}
 
-	/**
-	 * Get the type
-	 *
-	 * @return string
-	 */
 	public static function getType()
 	{
 		return 'code';
 	}
 
-	/**
-	 * Get the grant type of the token
-	 * 
-	 * @var string
-	 */
 	public static function getGrantType()
 	{
 		return 'authorization_code';

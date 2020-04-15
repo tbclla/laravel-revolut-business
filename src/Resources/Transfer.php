@@ -15,11 +15,7 @@ class Transfer extends Resource implements Buildable
 	const ENDPOINT = '/transfer';
 
 	/**
-     * Create a transfer between accounts of the business with the same currency.
-     *
      * @see https://revolut-engineering.github.io/api-docs/business-api/#transfers-create-transfer Official API documentation
-     * @param array $json The request parameters
-     * @return array
      */
     public function create(array $json)
     {
@@ -27,8 +23,6 @@ class Transfer extends Resource implements Buildable
     }
 
     /**
-     * Build the transfer request options
-     * 
      * @return \tbclla\Revolut\Builders\TransferBuilder
      */
     public function build()

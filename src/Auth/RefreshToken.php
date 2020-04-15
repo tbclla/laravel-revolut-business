@@ -22,44 +22,24 @@ class RefreshToken extends Token implements GrantsAccessTokens, PersistableToken
 	 */
 	const GRANT_TYPE = 'refresh_token';
 
-	/**
-	 * Get the token value
-	 *
-	 * @return string
-	 */
 	public function getValue()
 	{
 		return $this->value;
 	}
 
-	/**
-	 * Get the type
-	 *
-	 * @return string
-	 */
 	public static function getType()
 	{
 		return self::TYPE;
 	}
 
-	/**
-	 * Get the expiration date
-	 *
-	 * @return null
-	 */
-	public static function getExpiration()
-	{
-		return null;
-	}
-
-	/**
-	 * Get the grant type of the token
-	 * 
-	 * @return string
-	 */
 	public static function getGrantType()
 	{
 		return self::GRANT_TYPE;
+	}
+
+	public static function getExpiration()
+	{
+		return null;
 	}
 
 	/**

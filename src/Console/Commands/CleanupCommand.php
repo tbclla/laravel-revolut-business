@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use tbclla\Revolut\Auth\AccessToken;
 use Illuminate\Support\Str;
 use tbclla\Revolut\Auth\RefreshToken;
-use tbclla\Revolut\Auth\State;
 
 class CleanupCommand extends Command
 {
@@ -22,7 +21,7 @@ class CleanupCommand extends Command
 	 *
 	 * @var string
 	 */
-	protected $description = 'Delete all expired Revolut access tokens, refresh tokens and OAuth state tokens.';
+	protected $description = 'Delete all expired Revolut access tokens and refresh tokens.';
 
 	/**
 	 * Execute the console command.
@@ -33,9 +32,6 @@ class CleanupCommand extends Command
 	{
 		$accessTokens = AccessToken::clearExpired();
 		$this->info('Deleted ' . $accessTokens . ' expired access ' . Str::plural('token', $accessTokens));
-
-		$authStates = State::clearExpired();
-		$this->info('Deleted ' . $authStates . ' expired OAuth state ' . Str::plural('token', $authStates));
 
 		$refreshTokens = RefreshToken::clearExpired();
 		$this->info('Deleted ' . $refreshTokens . ' expired refresh ' . Str::plural('token', $refreshTokens));

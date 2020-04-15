@@ -2,8 +2,6 @@
 
 namespace tbclla\Revolut\Auth\Requests;
 
-use tbclla\Revolut\Repositories\TokenRepository;
-
 class AuthorizationCodeRequest
 {
 	/**
@@ -30,13 +28,6 @@ class AuthorizationCodeRequest
 	/**
 	 * A token repository
 	 *
-	 * @var \tbclla\Revolut\Repositories\TokenRepository
-	 */
-	private $tokens;
-
-	/**
-	 * A token repository
-	 *
 	 * @var string The client Id
 	 */
 	private $clientId;
@@ -56,20 +47,26 @@ class AuthorizationCodeRequest
 	private $sandbox;
 
 	/**
+	 * A state value
+	 *
+	 * @var string
+	 */
+	public $state;
+
+	/**
 	 * Create a new request
 	 *
-	 * @param \tbclla\Revolut\Repositories\TokenRepository $tokens
 	 * @param string $clientId The Revolut Business Client ID
 	 * @param string $redirectUri The OAuth redirect URI
 	 * @param bool $sandbox Whether or not to use the sandbox environment
 	 * @return void
 	 */
-	public function __construct(TokenRepository $tokens, string $clientId, string $redirectUri, bool $sandbox = true)
+	public function __construct(string $clientId, string $redirectUri, bool $sandbox = true)
 	{
-		$this->tokens = $tokens;
 		$this->clientId = $clientId;
 		$this->redirectUri = $redirectUri;
 		$this->sandbox = $sandbox;
+		$this->state = uniqid();
 	}
 
 	/**
@@ -103,18 +100,7 @@ class AuthorizationCodeRequest
 			'response_type' => 'request_token',
 			'client_id' => $this->clientId,
 			'redirect_uri' => $this->redirectUri,
-			'state' => $this->makeState(),
+			'state' => $this->state
 		]);
-	}
-
-	/**
-	 * Create a new state token
-	 *
-	 * @return string The state token value
-	 */
-	private function makeState()
-	{
-		$this->tokens->createState($value = uniqid());
-		return $value;
 	}
 }

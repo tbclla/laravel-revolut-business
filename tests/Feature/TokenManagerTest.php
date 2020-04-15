@@ -41,6 +41,8 @@ class TokenManagerTest extends TestCase
 		$app['config']->set('revolut.client_id', env('REVOLUT_CLIENT_ID'));
 		$app['config']->set('revolut.private_key', env('REVOLUT_PRIVATE_KEY'));
 		$app['config']->set('revolut.redirect_uri', env('REVOLUT_REDIRECT_URI'));
+		$app['config']->set('revolut.auth_route.name', 'revolut-authorization');
+		$app['config']->set('revolut.auth_route.middleware', []);
 	}
 
 	protected function getPackageProviders($app)
@@ -108,18 +110,5 @@ class TokenManagerTest extends TestCase
 
 		$this->assertEquals('a_sample_access_token', $accessToken->value);
 		$this->assertEquals('a_sample_refresh_token', $refreshToken->value);
-	}
-
-	/** @test */
-	public function a_token_manager_can_get_the_latest_state()
-	{
-		State::create(['value' => 'a_sample_state']);
-		State::create(['value' => 'a_second_sample_state']);
-
-		$manager = resolve(TokenManager::class);
-
-		$state = $manager->getState();
-
-		$this->assertEquals('a_second_sample_state', $state->value);
 	}
 }

@@ -2,31 +2,55 @@
 
 namespace tbclla\Revolut\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use tbclla\Revolut\Auth\AuthorizationCode;
+use tbclla\Revolut\Auth\Requests\AuthorizationCodeRequest;
 use tbclla\Revolut\Auth\TokenManager;
 
 class AuthorizationController extends Controller
 {
 	/**
+	 * @param \illuminate\Http\Request $request
+	 * @param \tbclla\Revolut\Auth\Requests\AuthorizationCodeRequest $authRequest
+	 * @return \illuminate\Http\RedirectResponse
+	 */
+	public function create(Request $request, AuthorizationCodeRequest $authRequest)
+	{
+		// store the state and an optional redirect url
+		session([$authRequest->state => $request->after_success ?? null]);
+
+		// redirect to Revolut's OAuth flow
+		return redirect($authRequest->build());
+	}
+
+	/**
+	 * @param \illuminate\Http\Request $request
 	 * @param \tbclla\Revolut\Auth\TokenManager
 	 * @return mixed
 	 */
-	public function __invoke(TokenManager $tokenManager)
+	public function store(Request $request, TokenManager $tokenManager)
 	{
-		// if the request does not contains a code and a state, abort
-		if (!request('state') or !request('code')) {
+		// verify that the request contains the required parameters
+		if (!$request->state or !$request->code) {
 			abort(405, 'Invalid Request');
 		}
 
-		// if the state does not match the latest expected state, abort
-		if (!$tokenManager->validateState(request('state'))) {
+		// verify that the session holds a matching state
+		if (!session()->has($request->state)) {
 			abort(405, 'Invalid State');
 		}
 
-		$authCode = new AuthorizationCode(request('code'));
+		$authCode = new AuthorizationCode($request->code);
+		
 		$tokenManager->requestAccessToken($authCode);
 
-		return response('Authorization successfull', 200);
+		$redirect = session()->get($request->state);
+
+		session()->forget($request->state);
+
+		return $redirect
+			? redirect($redirect)
+		 	: response('Authorization successfull', 200);
 	}
 }

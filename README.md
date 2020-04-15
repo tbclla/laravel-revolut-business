@@ -89,6 +89,7 @@ Complete step 1 of Revolut's instructions to generate a key pair.<br>
 #### Step 2 - Upload your public key
 
 Follow Revolut's step 2 to upload your newly created public key and provide a redirect URI.<br>
+⚠️ You do NOT have to create a route or controller for this redirect URI, this package will handle it.
 ❗Add this redirect URI to your `.env` as `REVOLUT_REDIRECT_URI`.
 
 Revolut will now have created a client ID for you.<br>
@@ -595,24 +596,25 @@ Client::generateRequestId();
 
 ### Requesting authorization codes
 
-To receive an authorization code from Revolut, you will need to make a GET request to Revolut, and complete Revolut's authorization.
-The GET request parameters include your `client_id`, the `redirect_uri`, a `response_type` and a `state`.
-Use the artisan command below to create this link and store a new state token in your database.
+To authorize your app, you have to complete Revolut's Oauth process.
+Use the below artisan command to initate it. You may set an optional --redirect flag to be redirected after the authorization has been completed.
 
 ```
 php artisan revolut:authorize
+
+php artisan revolut:authorize --redirect http://myapp.test/home
 ```
 
-If you need to create this request from within your code, for example to redirect a user to Revolut's authorization flow, you can resolve the `AuthorizationCodeRequest` class from Laravel's service container.
+If you need to redirect a user to Revolut's authorization flow, you can get the url via the route helper.
+The name of the route is configurable in your `config/revolut.php` file under `auth_route.name`.
+You may pass it an optional 'after_success' paramater which will redirect the user to the specified location after the authorization has been completed.
 
 ```php
-use tbclla\Revolut\Auth\AuthorizationCodeRequest;
+$url = route('revolut-authorize');
 
-$request = resolve(AuthorizationCodeRequest::class);
-$url = $request->build();
+$url = route('revolut-authorize', ['after_success' => route('home')]);
 
 return redirect($url);
-
 ```
 
 ## Cleaning up expired tokens

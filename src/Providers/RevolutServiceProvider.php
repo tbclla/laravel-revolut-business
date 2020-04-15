@@ -35,7 +35,6 @@ class RevolutServiceProvider extends ServiceProvider
 
         $this->app->bind(AuthorizationCodeRequest::class, function() {
             return new AuthorizationCodeRequest(
-                resolve(TokenRepository::class),
                 config('revolut.client_id'),
                 config('revolut.redirect_uri'),
                 config('revolut.sandbox')
@@ -62,20 +61,13 @@ class RevolutServiceProvider extends ServiceProvider
 
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
 
-        $this->commands([
-            JWTCommand::class,
-            CleanupCommand::class,
-            ResetCommand::class,
-            AuthorizeCommand::class,
-        ]);
-
-        // if ($this->app->runningInConsole()) {
-        //     $this->commands([
-        //         JWTCommand::class,
-        //         CleanupCommand::class,
-        //         ResetCommand::class,
-        //         AuthorizeCommand::class,
-        //     ]);
-        // }
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                JWTCommand::class,
+                CleanupCommand::class,
+                ResetCommand::class,
+                AuthorizeCommand::class,
+            ]);
+        }
     }
 }

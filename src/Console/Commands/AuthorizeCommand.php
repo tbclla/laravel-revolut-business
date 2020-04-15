@@ -13,7 +13,7 @@ class AuthorizeCommand extends Command
 	 *
 	 * @var string
 	 */
-	protected $signature = 'revolut:authorize';
+	protected $signature = 'revolut:authorize {--redirect= : A destination to be redirected to after the authorization}';
 
 	/**
 	 * The console command description.
@@ -29,18 +29,17 @@ class AuthorizeCommand extends Command
 	 */
 	public function handle()
 	{
-		$request = resolve(AuthorizationCodeRequest::class);
-		
-		try {
-			$url = $request->build();
-		} catch (RevolutException $e) {
-			$this->error($e->getMessage());
+		$redirect = $this->option('redirect') ?? null;
+
+		if (!$route = config('revolut.auth_route.name')) {
+			$this->error('Route name invalid or missing');
+			$this->error('Check you configuration and verify that "auth_route.name" is valid');
 			return;
 		}
 
-		$this->info('Your authorization request has been created.');
-		$this->line('Follow the link to complete the authorization:');
-		$this->info('<fg=black;bg=yellow>' . $url . '</>');
-		$this->comment('Revolut will automatically redirect you to ' . config('revolut.redirect_uri') . ' at the end of the authorization process.');
+		$url = route($route, ['after_success' => $redirect]);
+
+		$this->info('Follow the link to complete the authorization:');
+		$this->line('<fg=black;bg=yellow>' . $url . '</>');
 	}
 }

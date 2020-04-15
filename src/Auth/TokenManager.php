@@ -3,7 +3,7 @@
 namespace tbclla\Revolut\Auth;
 
 use tbclla\Revolut\Auth\Requests\AccessTokenRequest;
-use tbclla\Revolut\Exceptions\RevolutException;
+use tbclla\Revolut\Exceptions\AppUnauthorizedException;
 use tbclla\Revolut\Interfaces\GrantsAccessTokens;
 use tbclla\Revolut\Repositories\TokenRepository;
 
@@ -60,43 +60,15 @@ class TokenManager
 	}
 
 	/**
-	 * Get the latest state token from the repository
-	 *
-	 * @return \tbclla\Revolut\Auth\State|null
-	 */
-	public function getState()
-	{
-		return $this->tokenRepository->getState();
-	}
-
-	/**
-	 * Validate a string against the most recent state
-	 *
-	 * @param string $received The received state value
-	 * @return bool
-	 */
-	public function validateState(string $received)
-	{
-		if ($actual = $this->getState()) {
-			if ($actual->value === $received) {
-				$this->tokenRepository->deleteState($actual);
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
 	 * Exchange a refresh token for a new access token
 	 *
 	 * @return \tbclla\Revolut\Auth\AccessToken
-	 * @throws \tbclla\Revolut\Exceptions\RevolutException
+	 * @throws \tbclla\Revolut\Exceptions\AppUnauthorizedException
 	 */
 	public function refreshAccessToken()
 	{
 		if (!$refreshToken = $this->getRefreshToken()) {
-			throw new RevolutException('No refresh token found. Re-authorization required.');
+			throw new AppUnauthorizedException('No refresh token found. Re-authorization required.');
 		}
 
 		return $this->requestAccessToken($refreshToken);

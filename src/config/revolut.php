@@ -1,8 +1,8 @@
 <?php
 
 return [
-	
-	/*
+
+    /*
     |--------------------------------------------------------------------------
     | Environment
     |--------------------------------------------------------------------------
@@ -11,9 +11,9 @@ return [
     | Default is true.
     |
     */
-	'sandbox' => env('REVOLUT_SANDBOX', true),
+    'sandbox' => env('REVOLUT_SANDBOX', true),
 
-	/*
+    /*
     |--------------------------------------------------------------------------
     | Private Key Path
     |--------------------------------------------------------------------------
@@ -36,7 +36,7 @@ return [
     |
     */
     'client_id' => env('REVOLUT_CLIENT_ID'),
-    
+
     /*
     |--------------------------------------------------------------------------
     | Oauth Redirect URI
@@ -44,6 +44,9 @@ return [
     |
     | Set where Revoult should redirect you at the end of the authorization 
     | process. This must match the uri provided to Revolut.
+    |
+    | You do NOT have to create your own web route, this package creates the
+    | necessary route and controllers.
     |
     */
     'redirect_uri' => env('REVOLUT_REDIRECT_URI'),
@@ -59,7 +62,7 @@ return [
     |
     */
     'encrypt_tokens' => true,
-    
+
     /*
     |--------------------------------------------------------------------------
     | Tokens table
@@ -68,5 +71,33 @@ return [
     | Set the name of the table that will hold your Revolut tokens.
     |
     */
-    'tokens_table' => 'revolut_tokens'
+    'tokens_table' => 'revolut_tokens',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Authorization Route
+    |--------------------------------------------------------------------------
+    |
+    | Configure the authorization route, which is used to initate Revolut's
+    | authorization process.
+    |
+    | The url is '<redirect_uri>/create'.
+    |
+    | You can set a name for this route, and define the middleware for it.
+    | It is recommended that you secure this route with middleware to
+    | prevent unauthorized persons from initiating the Oauth flow.
+    |
+    */
+    'auth_route' => [
+
+        'name' => 'revolut-authorization',
+
+        /**
+         * The 'web' middleware is required for sessions to work reliably, as such
+         * it is set automatically and does not need to be specified.
+         */
+        'middleware' => [
+            // 'auth'
+        ]
+    ],
 ];

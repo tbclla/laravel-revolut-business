@@ -11,6 +11,11 @@
 			"tbclla\\Revolut\\": "src/"
 		}
 	},
+	"autoload-dev": {
+        "psr-4": {
+			"tbclla\\Revolut\\Tests\\": "tests/"
+		}
+    },
 	"extra": {
 		"laravel": {
 			"providers": [

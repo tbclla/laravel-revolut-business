@@ -18,7 +18,7 @@ class AuthorizationController extends Controller
 	public function create(Request $request, AuthorizationCodeRequest $authRequest)
 	{
 		// store the state and an optional redirect url
-		session([$authRequest->state => $request->after_success ?? null]);
+		session([$authRequest->state => $request->after_success ?? false]);
 
 		// redirect to Revolut's OAuth flow
 		return redirect($authRequest->build());
@@ -26,7 +26,7 @@ class AuthorizationController extends Controller
 
 	/**
 	 * @param \illuminate\Http\Request $request
-	 * @param \tbclla\Revolut\Auth\TokenManager
+	 * @param \tbclla\Revolut\Auth\TokenManager $tokenManager
 	 * @return mixed
 	 */
 	public function store(Request $request, TokenManager $tokenManager)

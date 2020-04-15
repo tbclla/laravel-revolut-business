@@ -74,7 +74,7 @@ class JWTCommand extends Command
     private function checkPublicKey($key = null)
     {
         try {
-            return file_get_contents($key ?? $this->ask('If you want to validate this JWT, enter the path to your private key'));
+            return file_get_contents($key ?? $this->ask('If you want to validate this JWT, enter the path to your public key'));
         } catch (Exception $e) {
             $this->error($e->getMessage());
             return $this->checkPublicKey();

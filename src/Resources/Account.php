@@ -19,22 +19,21 @@ class Account extends Resource
 	 * @throws \tbclla\Revolut\Exceptions\ApiException
 	 */
 	public function all()
-    {
-        return $this->client->get(self::ENDPOINT);
+	{
+		return $this->client->get(self::ENDPOINT);
 	}
 
-
-    /**
+	/**
 	 * Get an account by its ID
 	 * @throws \tbclla\Revolut\Exceptions\ApiException
 	 * 
 	 * @see https://revolut-engineering.github.io/api-docs/business-api/#accounts-get-account Official API documentation
-     * @param string $id The account ID in UUID format
-     * @return array
-     */
-    public function get(string $id)
-    {
-        return $this->client->get(self::ENDPOINT . '/' . $id);
+	 * @param string $id The account ID in UUID format
+	 * @return array
+	 */
+	public function get(string $id)
+	{
+		return $this->client->get(self::ENDPOINT . '/' . $id);
 	}
 
 	/**
@@ -45,7 +44,7 @@ class Account extends Resource
 	 * @return array
 	 */
 	public function details(string $id)
-    {
-        return $this->client->get(self::ENDPOINT . '/' . $id . '/bank-details');
-    }
+	{
+		return $this->client->get(self::ENDPOINT . '/' . $id . '/bank-details');
+	}
 }

@@ -128,7 +128,7 @@ class Client
 	 * @return string
 	 */
 	public static function buildUri(string $endpoint = '')
-    {
+	{
 		$url = config('revolut.sandbox', true) ? self::SANDBOX_URL : self::PRODUCTION_URL;
 
 		return $url . self::apiUri() . $endpoint;
@@ -145,39 +145,39 @@ class Client
 
 	/**
 	 * Perform a POST request against a specified endpoint
-	 * 
-     * @param string $endpoint
-     * @param array $options
-     * @return array
+	 *
+	 * @param string $endpoint
+	 * @param array $options
+	 * @return array
 	 * @throws \tbclla\Revolut\Exceptions\ApiException
-     */
-    public function post(string $endpoint, array $options = [])
-    {
+	 */
+	public function post(string $endpoint, array $options = [])
+	{
 		return $this->httpClient->post($this->buildUri($endpoint), $this->buildOptions($options));
-    }
-
-    /**
-	 * Perform a GET request against a specified endpoint
-	 * 
-     * @param string $endpoint
-     * @return array
-	 * @throws \tbclla\Revolut\Exceptions\ApiException
-     */
-    public function get(string $endpoint, array $options = [])
-    {
-		return $this->httpClient->get($this->buildUri($endpoint), $this->buildOptions($options));
 	}
 
-    /**
-	 * Perform a DELETE request against a specified endpoint
-	 * 
-     * @param string $endpoint
-     * @return void
+	/**
+	 * Perform a GET request against a specified endpoint
+	 *
+	 * @param string $endpoint
+	 * @return array
 	 * @throws \tbclla\Revolut\Exceptions\ApiException
-     */
-    public function delete(string $endpoint)
-    {
-		return $this->httpClient->delete($this->buildUri($endpoint), $this->buildOptions());
+	 */
+	public function get(string $endpoint, array $options = [])
+	{
+		return $this->httpClient->get($this->buildUri($endpoint), $this->buildOptions($options));
+	}
+	
+	/**
+	 * Perform a DELETE request against a specified endpoint
+	 *
+	 * @param string $endpoint
+	 * @return void
+	 * @throws \tbclla\Revolut\Exceptions\ApiException
+	 */
+	public function delete(string $endpoint)
+	{
+		$this->httpClient->delete($this->buildUri($endpoint), $this->buildOptions());
 	}
 
 	/**

@@ -25,10 +25,10 @@ abstract class Token extends Model
 	protected $fillable = ['value'];
 
 	/**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
+	 * The attributes that should be cast to native types.
+	 *
+	 * @var array
+	 */
 	protected $casts = [
 		'is_encrypted' => 'boolean',
 		'expires_at' => 'datetime',
@@ -36,21 +36,21 @@ abstract class Token extends Model
 	];
 
 	/**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
+	 * The "booting" method of the model.
+	 * 
+	 * @return void
+	 */
+	protected static function boot()
+	{
 		parent::boot();
 
 		static::creating(function($model) {
 			$model->type = static::getType();
 			$model->expires_at = static::getExpiration();
 		});
-
-        static::addGlobalScope('type', function(Builder $builder) {
-            $builder->whereType(static::getType());
+		
+		static::addGlobalScope('type', function(Builder $builder) {
+			$builder->whereType(static::getType());
 		});
 	}
 

@@ -18,19 +18,19 @@ class Counterparty extends Resource implements Buildable
 	 * @see https://revolut-engineering.github.io/api-docs/business-api/#counterparties-add-revolut-counterparty Official API documentation
 	 */
 	public function create(array $json)
-    {
+	{
 		return $this->client->post(self::ENDPOINT, ['json' => $json]);
 	}
 	
 	/**
-     * Get all counterparties
-	 *
+	 * Get all counterparties
+	 * 
 	 * @see https://revolut-engineering.github.io/api-docs/business-api/#counterparties-get-counterparties Official API documentation
-     * @return array
-     */
-    public function all()
-    {
-        return $this->client->get('/counterparties');
+	 * @return array
+	 */
+	public function all()
+	{
+		return $this->client->get('/counterparties');
 	}
 	
 	/**
@@ -41,8 +41,8 @@ class Counterparty extends Resource implements Buildable
 	 * @return array
 	 */
 	public function get(string $id)
-    {
-        return $this->client->get(self::ENDPOINT . '/' . $id);
+	{
+		return $this->client->get(self::ENDPOINT . '/' . $id);
 	}
 	
 	/**
@@ -53,8 +53,8 @@ class Counterparty extends Resource implements Buildable
 	 * @return void
 	 */
 	public function delete(string $id) : void
-    {
-        $this->client->delete(self::ENDPOINT . '/' . $id);
+	{
+		$this->client->delete(self::ENDPOINT . '/' . $id);
 	}
 
 	/**

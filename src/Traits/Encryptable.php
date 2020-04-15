@@ -18,15 +18,15 @@ trait Encryptable
 				$model->is_encrypted = true;
 				$model->value = $model->encryptValue();
 			}
-        });
+		});
 	}
 
 	/**
-     * Get the decrypted value attribute.
-     *
-     * @param  string  $value
-     * @return string
-     */
+	 * Get the decrypted value attribute.
+	 * 
+	 * @param  string  $value
+	 * @return string
+	 */
 	public function getValueAttribute($value)
 	{
 		return $this->is_encrypted ? $this->decryptValue() : $value;

@@ -23,8 +23,8 @@ class Exchange extends Resource implements Buildable
 	}
 
 	/**
-     * @return \tbclla\Revolut\Builders\ExchangeBuilder
-     */
+	 * @return \tbclla\Revolut\Builders\ExchangeBuilder
+	 */
 	public function build()
 	{
 		return new ExchangeBuilder($this, $this->client->generateRequestId());

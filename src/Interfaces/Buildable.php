@@ -15,7 +15,7 @@ interface Buildable
 	/**
 	 * Get a buildable instance
 	 *
-	 * @return \tbclla\Revolut\Interfaces\Buildable
+	 * @return \tbclla\Revolut\Builders\Builder
 	 */
 	public function build();
 }

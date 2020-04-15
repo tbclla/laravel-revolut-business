@@ -3,11 +3,8 @@
 namespace tbclla\Revolut;
 
 use Illuminate\Support\Str;
-use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\BadResponseException;
 use tbclla\Revolut\Auth\AccessToken;
 use tbclla\Revolut\Auth\TokenManager;
-use tbclla\Revolut\Exceptions\ApiException;
 use tbclla\Revolut\Exceptions\RevolutException;
 use tbclla\Revolut\Interfaces\MakesHttpRequests;
 
@@ -205,5 +202,5 @@ class Client
 	public static function generateRequestId()
 	{
 		return (string) Str::Uuid();
-	}
+    }
 }

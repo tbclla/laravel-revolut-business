@@ -32,5 +32,5 @@ interface MakesHttpRequests
 	 * @return void
 	 * @throws \tbclla\Revolut\Exceptions\ApiException API returned a 4xx or 5xx response code
 	 */
-	public function delete(string $url);
+	public function delete(string $url, array $options = []);
 }

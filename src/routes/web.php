@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'tbclla\Revolut\Controllers', 'middleware' => ['web']], function() {
 
-    $route = parse_url(config('revolut.redirect_uri'))['path'];
+	$route = parse_url(config('revolut.redirect_uri'))['path'];
 
-    Route::get($route . '/create', 'AuthorizationController@create')
-         ->middleware(config('revolut.auth_route.middleware'))
-         ->name(config('revolut.auth_route.name'));
+	Route::get($route . '/create', 'AuthorizationController@create')
+		->middleware(config('revolut.auth_route.middleware'))
+		->name(config('revolut.auth_route.name'));
 
-    Route::get($route, 'AuthorizationController@store');
+	Route::get($route, 'AuthorizationController@store');
 });

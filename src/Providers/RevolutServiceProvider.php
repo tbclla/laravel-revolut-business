@@ -12,62 +12,61 @@ use tbclla\Revolut\Console\Commands\JWTCommand;
 use tbclla\Revolut\Console\Commands\ResetCommand;
 use tbclla\Revolut\GuzzleHttpClient;
 use tbclla\Revolut\Interfaces\MakesHttpRequests;
-use tbclla\Revolut\Repositories\TokenRepository;
 
 class RevolutServiceProvider extends ServiceProvider
 {
-    /**
-     * Register services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->app->bind(MakesHttpRequests::class, GuzzleHttpClient::class);
+	/**
+	 * Register services.
+	 *
+	 * @return void
+	 */
+	public function register()
+	{
+		$this->app->bind(MakesHttpRequests::class, GuzzleHttpClient::class);
 
-        $this->app->bind(ClientAssertion::class, function() {
-            return new ClientAssertion(
-                config('revolut.client_id'),
-                config('revolut.private_key'),
-                config('revolut.redirect_uri')
-            );
-        });
+		$this->app->bind(ClientAssertion::class, function() {
+			return new ClientAssertion(
+				config('revolut.client_id'),
+				config('revolut.private_key'),
+				config('revolut.redirect_uri')
+			);
+		});
 
-        $this->app->bind(AuthorizationCodeRequest::class, function() {
-            return new AuthorizationCodeRequest(
-                config('revolut.client_id'),
-                config('revolut.redirect_uri'),
-                config('revolut.sandbox')
-            );
-        });
+		$this->app->bind(AuthorizationCodeRequest::class, function() {
+			return new AuthorizationCodeRequest(
+				config('revolut.client_id'),
+				config('revolut.redirect_uri'),
+				config('revolut.sandbox')
+			);
+		});
 
-        $this->app->singleton('revolut', function() {
-            return resolve(Client::class);
-        });
-    }
+		$this->app->singleton('revolut', function() {
+			return resolve(Client::class);
+		});
+	}
 
-    /**
-     * Bootstrap services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->publishes([
-            __DIR__ . '/../config/revolut.php' => config_path('revolut.php')
-        ]);
+	/**
+	 * Bootstrap services.
+	 *
+	 * @return void
+	 */
+	public function boot()
+	{
+		$this->publishes([
+			__DIR__ . '/../config/revolut.php' => config_path('revolut.php')
+		]);
 
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+		$this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
-        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+		$this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
 
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                JWTCommand::class,
-                CleanupCommand::class,
-                ResetCommand::class,
-                AuthorizeCommand::class,
-            ]);
-        }
-    }
+		if ($this->app->runningInConsole()) {
+			$this->commands([
+				JWTCommand::class,
+				CleanupCommand::class,
+				ResetCommand::class,
+				AuthorizeCommand::class,
+			]);
+		}
+	}
 }

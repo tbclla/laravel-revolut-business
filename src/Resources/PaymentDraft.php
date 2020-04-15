@@ -58,8 +58,8 @@ class PaymentDraft extends Resource implements Buildable
 	}
 
 	/**
-     * @return \tbclla\Revolut\Builders\PaymentDraftBuilder
-     */
+	 * @return \tbclla\Revolut\Builders\PaymentDraftBuilder
+	 */
 	public function build()
 	{
 		return new PaymentDraftBuilder($this);

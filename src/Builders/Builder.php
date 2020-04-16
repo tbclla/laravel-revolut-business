@@ -11,7 +11,7 @@ abstract Class Builder
 	 *
 	 * @var \tbclla\Revolut\Interfaces\Buildable
 	 */
-	private $resource;
+	protected $resource;
 
 	/**
 	 * The unique ID of the request

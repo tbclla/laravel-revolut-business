@@ -130,6 +130,7 @@ class Client
 
 		return $url . self::apiUri() . $endpoint;
 	}
+	
 	/**
 	 * Get the URI for API requests
 	 * 

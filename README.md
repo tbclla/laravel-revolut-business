@@ -633,7 +633,7 @@ Route::get('/accounts', function () {
 
 ## Cleaning up expired tokens
 
-To clean up your database and delete any expired access tokens, refresh tokens and Oauth state tokens, you can use the below artisan command.
+To clean up your database and delete any expired access tokens and refresh tokens, you can use the below artisan command.
 
 ```
 php artisan revolut:cleanup

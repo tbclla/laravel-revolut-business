@@ -14,7 +14,6 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./src</directory>
-            <directory suffix=".php">./tests</directory>
         </whitelist>
     </filter>
     <php>
@@ -22,7 +21,8 @@
         <server name="DB_DATABASE" value=":memory:"/>
         <env name="APP_KEY" value="AckfSECXIvnK5r28GVIWUAxmbBSjTsmF"/>
         <env name="REVOLUT_CLIENT_ID" value="l4C7YM6zC91u0RoU0_FNga7VMMGSaudjVIUmdkwbRxE"/>
-        <env name="REVOLUT_REDIRECT_URI" value="http://example.test/laravel-revolut/auth"/>
-        <env name="REVOLUT_PRIVATE_KEY" value="./example.key"/>
+        <env name="REVOLUT_REDIRECT_URI" value="http://example.test/revolut-business"/>
+        <env name="REVOLUT_PRIVATE_KEY" value="./tests/example_privatekey.pem"/>
+        <env name="REVOLUT_PUBLIC_KEY" value="./tests/example_publickey.cer"/>
     </php>
 </phpunit>

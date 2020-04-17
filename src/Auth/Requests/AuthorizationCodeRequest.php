@@ -66,7 +66,7 @@ class AuthorizationCodeRequest
 		$this->clientId = $clientId;
 		$this->redirectUri = $redirectUri;
 		$this->sandbox = $sandbox;
-		$this->state = uniqid();
+		$this->state = $this->generateState();
 	}
 
 	/**
@@ -102,5 +102,15 @@ class AuthorizationCodeRequest
 			'redirect_uri' => $this->redirectUri,
 			'state' => $this->state
 		]);
+	}
+
+	/**
+	 * Generate a state value
+	 *
+	 * @return string
+	 */
+	private function generateState()
+	{
+		return base64_encode(random_bytes(32));
 	}
 }

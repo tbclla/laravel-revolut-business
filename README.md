@@ -651,14 +651,12 @@ This packages uses [Laravel's built-in encryption tools](https://laravel.com/doc
 #### Cache
 
 Tokens stored in your cache are only remembered for the duration of their validity, so there is no need to remove them.
-If you would like to flush tokens from your cache, you can target them by their tags.
+If you would like to remove tokens from your cache, you can 'forget()' them by their keys.
 ```php
-// flush access token
-Cache::tags('revolut_access_token')->flush();
-// flush refresh token
-Cache::tags('revolut_refresh_token')->flush();
-// flush all tokens
-Cache::tags('revolut_token')->flush();
+// remove access token
+Cache::forget('revolut_access_token');
+// remove refresh token
+Cache::forget('revolut_refresh_token');
 ```
 
 #### Database

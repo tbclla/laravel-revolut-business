@@ -16,13 +16,13 @@ class CacheTokenRepositoryTest extends TestCase
 	{
 		parent::setUp();
 
-		$this->repo = new CacheTokenRepository;
+		$this->repo = resolve(CacheTokenRepository::class);
 	}
 
 	/** @test */
 	public function a_cache_token_repository_can_create_an_access_token()
 	{
-		$key = CacheTokenRepository::PREFIX . AccessToken::TYPE;
+		$key = $this->repo->getKey(AccessToken::TYPE);
 
 		$this->repo->createAccessToken('example_value');
 
@@ -44,7 +44,7 @@ class CacheTokenRepositoryTest extends TestCase
 	/** @test */
 	public function a_cache_token_repository_can_create_a_refresh_token()
 	{
-		$key = CacheTokenRepository::PREFIX . RefreshToken::TYPE;
+		$key = $this->repo->getKey(RefreshToken::TYPE);
 
 		$this->repo->createRefreshToken('example_value');
 

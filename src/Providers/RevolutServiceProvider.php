@@ -28,7 +28,7 @@ class RevolutServiceProvider extends ServiceProvider
 		$this->app->bind(TokenRepository::class, function() {
 			return config('revolut.token_driver') === 'database'
 				? new DatabaseTokenRepository
-				: new CacheTokenRepository;
+				:  resolve(CacheTokenRepository::class);
 		});
 
 		$this->app->bind(MakesHttpRequests::class, GuzzleHttpClient::class);

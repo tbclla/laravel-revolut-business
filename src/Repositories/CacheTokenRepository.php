@@ -2,10 +2,11 @@
 
 namespace tbclla\Revolut\Repositories;
 
-use Illuminate\Support\Facades\Cache;
 use tbclla\Revolut\Auth\AccessToken;
 use tbclla\Revolut\Auth\RefreshToken;
+use tbclla\Revolut\Interfaces\PersistableToken;
 use tbclla\Revolut\Interfaces\TokenRepository;
+use Illuminate\Cache\Repository as Cache;
 
 class CacheTokenRepository implements TokenRepository
 {
@@ -14,45 +15,77 @@ class CacheTokenRepository implements TokenRepository
 	 * 
 	 * @var string
 	 */
-	const PREFIX = 'revolut-token.';
+	const PREFIX = 'revolut_';
+
+	/**
+	 * @param \Illuminate\Cache\Repository $cache
+	 */
+	public function __construct(Cache $cache)
+	{
+		$this->cache = $cache;
+	}
 
 	public function getAccessToken()
 	{
-		return Cache::get(self::PREFIX . AccessToken::TYPE);
+		return $this->getToken(AccessToken::TYPE);
 	}
 
 	public function getRefreshToken()
 	{
-		return Cache::get(self::PREFIX . RefreshToken::TYPE);
+		return $this->getToken(RefreshToken::TYPE);
 	}
 
 	public function createAccessToken(string $value)
 	{
-		$accessToken = new AccessToken([
+		$this->createToken($accessToken = new AccessToken([
 			'value' => $value
-		]);
-
-		Cache::tags(['revolut', 'access_tokens'])->put(
-			self::PREFIX . AccessToken::TYPE,
-			$accessToken,
-			$accessToken->getExpiration()
-		);
+		]));
 
 		return $accessToken;
 	}
 
 	public function createRefreshToken(string $value)
 	{
-		$refreshToken = new RefreshToken([
+		$this->createToken($refreshToken = new RefreshToken([
 			'value' => $value
-		]);
-
-		Cache::tags(['revolut', 'refresh_token'])->put(
-			self::PREFIX . RefreshToken::TYPE,
-			$refreshToken,
-			$refreshToken->getExpiration()
-		);
+		]));
 
 		return $refreshToken;
+	}
+
+	/**
+	 * Get a token from the cache
+	 *
+	 * @param string $type
+	 * @return \tbclla\Revolut\Interfaces\PersistableToken|null
+	 */
+	private function getToken($type)
+	{
+		return $this->cache->get($this->getKey($type));
+	}
+
+	/**
+	 * Put the token into the cache
+	 * 
+	 * @param \tbclla\Revolut\Interfaces\PersistableToken $token
+	 */
+	private function createToken(PersistableToken $token)
+	{
+		$this->cache->put(
+			$this->getKey($token->getType()),
+			$token,
+			$token->getExpiration()
+		);
+	}
+
+	/**
+	 * Get the cache key
+	 *
+	 * @param string $type
+	 * @return string
+	 */
+	public function getKey(string $type)
+	{
+		return self::PREFIX . $type;
 	}
 }

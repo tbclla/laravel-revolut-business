@@ -12,6 +12,9 @@ use tbclla\Revolut\Console\Commands\JWTCommand;
 use tbclla\Revolut\Console\Commands\ResetCommand;
 use tbclla\Revolut\GuzzleHttpClient;
 use tbclla\Revolut\Interfaces\MakesHttpRequests;
+use tbclla\Revolut\Interfaces\TokenRepository;
+use tbclla\Revolut\Repositories\CacheTokenRepository;
+use tbclla\Revolut\Repositories\DatabaseTokenRepository;
 
 class RevolutServiceProvider extends ServiceProvider
 {
@@ -22,6 +25,12 @@ class RevolutServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
+		$this->app->bind(TokenRepository::class, function() {
+			return config('revolut.token_driver') === 'database'
+				? new DatabaseTokenRepository
+				: new CacheTokenRepository;
+		});
+
 		$this->app->bind(MakesHttpRequests::class, GuzzleHttpClient::class);
 
 		$this->app->bind(ClientAssertion::class, function() {
@@ -56,8 +65,10 @@ class RevolutServiceProvider extends ServiceProvider
 			__DIR__ . '/../config/revolut.php' => config_path('revolut.php')
 		]);
 
-		$this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-
+		if (config('revolut.token_driver') === 'database') {
+			$this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+		}
+		
 		$this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
 
 		if ($this->app->runningInConsole()) {

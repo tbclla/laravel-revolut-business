@@ -7,48 +7,27 @@ use Illuminate\Support\Facades\Crypt;
 trait Encryptable
 {
 	/**
-	 * the 'boot' method
-	 * 
+	 * Set the value attribute
+	 *
+	 * @param string $value
 	 * @return void
 	 */
-	public static function bootEncryptable()
+	public function setValueAttribute(string $value)
 	{
-		static::saving(function($model) {
-			if (config('revolut.encrypt_tokens', true)) {
-				$model->is_encrypted = true;
-				$model->value = $model->encryptValue();
-			}
-		});
+		$encrypt = config('revolut.encrypt_tokens', true);
+		
+		$this->attributes['value'] = $encrypt ? encrypt($value) : $value;
+		$this->attributes['is_encrypted'] = $encrypt;
 	}
 
 	/**
-	 * Get the decrypted value attribute.
+	 * Get the value attribute.
 	 * 
 	 * @param  string  $value
 	 * @return string
 	 */
-	public function getValueAttribute($value)
+	public function getValueAttribute(string $value)
 	{
-		return $this->is_encrypted ? $this->decryptValue() : $value;
-	}
-
-	/**
-	 * Encrypt the value attribute of the model
-	 * 
-	 * @return string
-	 */
-	private function encryptValue()
-	{
-		return Crypt::encrypt($this->attributes['value']);
-	}
-
-	/**
-	 * Decrypt the value attribute of the model
-	 * 
-	 * @return string
-	 */
-	private function decryptValue()
-	{
-		return Crypt::decrypt($this->attributes['value']);
+		return $this->is_encrypted ? decrypt($value) : $value;
 	}
 }

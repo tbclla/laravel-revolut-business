@@ -2,12 +2,14 @@
 
 namespace tbclla\Revolut\Tests;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use tbclla\Revolut\Auth\AuthorizationCode;
 use tbclla\Revolut\Auth\ClientAssertion;
 use tbclla\Revolut\Auth\Requests\AccessTokenRequest;
 use tbclla\Revolut\Auth\TokenManager;
 use tbclla\Revolut\Interfaces\MakesHttpRequests;
-use tbclla\Revolut\Repositories\TokenRepository;
+use tbclla\Revolut\Interfaces\TokenRepository;
 
 class managerTest extends TestCase
 {

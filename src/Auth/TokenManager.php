@@ -5,14 +5,14 @@ namespace tbclla\Revolut\Auth;
 use tbclla\Revolut\Auth\Requests\AccessTokenRequest;
 use tbclla\Revolut\Exceptions\AppUnauthorizedException;
 use tbclla\Revolut\Interfaces\GrantsAccessTokens;
-use tbclla\Revolut\Repositories\TokenRepository;
+use tbclla\Revolut\Interfaces\TokenRepository;
 
 class TokenManager
 {
 	/**
 	 * The token repository
 	 *
-	 * @var \tbclla\Revolut\Repositories\TokenRepository
+	 * @var \tbclla\Revolut\Interfaces\TokenRepository
 	 */
 	private $tokenRepository;
 
@@ -26,7 +26,7 @@ class TokenManager
 	/**
 	 * Create a token manager
 	 *
-	 * @param \tbclla\Revolut\Repositories\TokenRepository $tokenRepository
+	 * @param \tbclla\Revolut\Interfaces\TokenRepository $tokenRepository
 	 * @param \tbclla\Revolut\Auth\Requests\AccessTokenRequest $accessTokenRequest
 	 * @return void
 	 */

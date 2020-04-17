@@ -4,8 +4,9 @@ namespace tbclla\Revolut\Repositories;
 
 use tbclla\Revolut\Auth\AccessToken;
 use tbclla\Revolut\Auth\RefreshToken;
+use tbclla\Revolut\Interfaces\TokenRepository;
 
-class TokenRepository
+class DatabaseTokenRepository implements TokenRepository
 {
 	/**
 	 * Get the latest active access token

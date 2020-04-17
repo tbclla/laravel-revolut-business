@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use tbclla\Revolut\Traits\Encryptable;
 
+/**
+ * @property int|null $id
+ * @property string|null $type
+ * @property string|null $value
+ * @property bool|null $is_encrypted
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $expires_at
+ */
 abstract class Token extends Model
 {
 	use Encryptable;

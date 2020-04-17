@@ -18,7 +18,7 @@ class CacheTokenRepository implements TokenRepository
 
 	public function getAccessToken()
 	{
-		return Cache::get(self::PREFIX .  AccessToken::TYPE);
+		return Cache::get(self::PREFIX . AccessToken::TYPE);
 	}
 
 	public function getRefreshToken()

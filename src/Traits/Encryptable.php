@@ -2,8 +2,6 @@
 
 namespace tbclla\Revolut\Traits;
 
-use Illuminate\Support\Facades\Crypt;
-
 trait Encryptable
 {
 	/**
@@ -23,10 +21,10 @@ trait Encryptable
 	/**
 	 * Get the value attribute.
 	 * 
-	 * @param  string  $value
+	 * @param string|null $value
 	 * @return string
 	 */
-	public function getValueAttribute(string $value)
+	public function getValueAttribute($value)
 	{
 		return $this->is_encrypted ? decrypt($value) : $value;
 	}

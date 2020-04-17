@@ -63,13 +63,10 @@ REVOLUT_REDIRECT_URI=
 REVOLUT_CLIENT_ID=
 ```
 
-### Migration
+### Migration (Optional)
 
-The package requires a table to store your access and refresh tokens.
-
-By default, all access and refresh tokens are encrypted before being stored in the database.
-You can disable this behaviour in your `config/revolut.php` file, which you have just published.
-The name of this table can also be customised in the config file, **before you create the table**.
+If you have set the `token_driver` in your config to 'database', you will need to create a table to store the tokens in.
+You can customise the name of this table in the config.
 
 To create the table, run your migrations.
 
@@ -120,7 +117,7 @@ php artisan revolut:authorize
 ```
 
 **To mitigate against CSRF attacks, requesting an authorization code via Revolut's web interface does _NOT_ work in conjunction with Laravel-Revolut!**
-This package appends an additional state parameter to the authorization request, which it will require when retrieving the authorization code from Revolut's response.
+Read more about the authorization process here.
 
 #### Finishing up
 
@@ -584,29 +581,25 @@ use tbclla\Revolut\Client;
 Client::generateRequestId();
 ```
 
-## Switching from sandbox to a real account
-
-- Update your `.env` file and set `REVOLUT_SANDBOX=false`.
-- Clear your `revolut_tokens` table.
-- Update your `config/revolut.php` and set `encrypt_tokens` to true, if it isn't already.
-- Whitelist the IP's that will access the API by visiting your account Settings > API.
-- Reauthorize your app with `php artisan revolut:authorize`.
-
 ## Tokens and Authorization
 
-### Requesting authorization codes
+### Authorization
 
-To authorize your app, you have to complete Revolut's Oauth process.
-Use the below artisan command to initate it. You may set an optional --redirect flag to be redirected after the authorization has been completed.
+In accordance with [RFC6749 10.12](https://tools.ietf.org/html/rfc6749#section-10.12), this package implements CSRF protection for the `redirect_uri`.
+This package includes a controller to handle both the authorization request and subsequent response to enforce this.
+
+#### Authorization Request
+
+As the controller will require a valid state paramater, you can **not** use Revolut's web interface to authorize your app in conjunction with this package.
+To authorize your app, you must enter Revolut's Oauth flow from the `auth_route`.<br>
+You can get the url via the below artisan command.
 
 ```
 php artisan revolut:authorize
-
-php artisan revolut:authorize --redirect http://myapp.test/home
 ```
 
 If you need to redirect a user to Revolut's authorization flow, you can get the url via the route helper.
-The name of the route is configurable in your `config/revolut.php` file under `auth_route.name`.
+The `auth_route` is a named route and its name is configurable in your `config/revolut.php` file under `auth_route.name`.
 You may pass it an optional 'after_success' paramater which will redirect the user to the specified location after the authorization has been completed.
 
 ```php
@@ -631,9 +624,46 @@ Route::get('/accounts', function () {
 });
 ```
 
-## Cleaning up expired tokens
+#### Authorization Response
 
-To clean up your database and delete any expired access tokens and refresh tokens, you can use the below artisan command.
+Once your app has been authorized, Revolut will redirect you to the redirect URI which you have set when creating the API certificate.
+This redirect URI must match the `redirect_uri` set in `config/revolut.php`.
+
+You do **not** need to create a route or controller for this redirect URI.
+
+The authorization controller contained in this package will verify the presence and validity of the response's state parameter, and if accepted, will exchange the response's authorization code for an access and refresh token.
+Once these tokens are received and stored, the controller will redirect the user to a specified location.
+If no location was provided, the controller will return a `200` response instead.
+
+### Token Storage
+
+This package will store access and refresh tokens in either your database or the cache.
+Authorization codes are never stored and are instead exchanged for tokens immediately.
+To configure the token driver, visit your `config/revolut.php`.
+
+### Token Encryption
+
+By default, all access and refresh tokens are encrypted before being stored in either your database or cache.
+This packages uses [Laravel's built-in encryption tools](https://laravel.com/docs/7.x/encryption#introduction) to encrypt your tokens, so make sure that you have a strong `key` set in your `config/app.php`.
+
+### Cleaning up expired tokens
+
+#### Cache
+
+Tokens stored in your cache are only remembered for the duration of their validity, so there is no need to remove them.
+If you would like to flush tokens from your cache, you can target them by their tags.
+```php
+// flush access token
+Cache::tags('revolut_access_token')->flush();
+// flush refresh token
+Cache::tags('revolut_refresh_token')->flush();
+// flush all tokens
+Cache::tags('revolut_token')->flush();
+```
+
+#### Database
+
+If you are using the database token driver, you can remove expired access tokens and refresh tokens from your database with the below artisan command.
 
 ```
 php artisan revolut:cleanup
@@ -644,6 +674,14 @@ You can also schedule the command in your `App\Console\Kernel` class, to automat
 ```php
 $schedule->command('revolut:cleanup')->daily();
 ```
+
+## Switching from sandbox to a real account
+
+- Update your `.env` file and set `REVOLUT_SANDBOX=false`.
+- Clear any sandbox tokens from your database or cache.
+- Update your `config/revolut.php` and set `encrypt_tokens` to true, if it isn't already.
+- Whitelist the IP's that will access the API by visiting your account Settings > API.
+- Reauthorize your app.
 
 ## License
 

@@ -35,7 +35,7 @@ class CacheTokenRepository implements TokenRepository
 		Cache::tags(['revolut', 'access_tokens'])->put(
 			self::PREFIX . AccessToken::TYPE,
 			$accessToken,
-			AccessToken::TTL * 60
+			$accessToken->getExpiration()
 		);
 
 		return $accessToken;
@@ -49,7 +49,8 @@ class CacheTokenRepository implements TokenRepository
 
 		Cache::tags(['revolut', 'refresh_token'])->put(
 			self::PREFIX . RefreshToken::TYPE,
-			$refreshToken
+			$refreshToken,
+			$refreshToken->getExpiration()
 		);
 
 		return $refreshToken;

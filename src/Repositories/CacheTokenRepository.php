@@ -32,7 +32,7 @@ class CacheTokenRepository implements TokenRepository
 			'value' => $value
 		]);
 
-		Cache::put(
+		Cache::tags(['revolut', 'access_tokens'])->put(
 			self::PREFIX . AccessToken::TYPE,
 			$accessToken,
 			AccessToken::TTL * 60
@@ -47,7 +47,10 @@ class CacheTokenRepository implements TokenRepository
 			'value' => $value
 		]);
 
-		Cache::put(self::PREFIX . RefreshToken::TYPE, $refreshToken);
+		Cache::tags(['revolut', 'refresh_token'])->put(
+			self::PREFIX . RefreshToken::TYPE,
+			$refreshToken
+		);
 
 		return $refreshToken;
 	}

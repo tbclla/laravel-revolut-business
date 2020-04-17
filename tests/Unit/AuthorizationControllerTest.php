@@ -31,7 +31,7 @@ class AuthorizationControllerTest extends TestCase
 		$controller = new AuthorizationController;
 		$url = 'http://test.com/redirect';
 
-		$request = Request::create('/laravel-revolut/auth/creates', 'GET', ['after_success' => $url]);
+		$request = Request::create('', 'GET', ['after_success' => $url]);
 
 		$controller->create($request, $authCodeRequest);
 
@@ -101,9 +101,8 @@ class AuthorizationControllerTest extends TestCase
 	/** @test */
 	public function a_successful_auth_request_triggers_an_access_token_request()
 	{
-		$tokenManager = $this->mock(TokenManager::class, function($mock) {
-			$mock->shouldReceive()->requestAccessToken(AuthorizationCode::class);
-		});
+		$tokenManager = $this->mock(TokenManager::class);
+		$tokenManager->shouldReceive()->requestAccessToken(AuthorizationCode::class);
 
 		$request = Request::create('', 'GET', [
 			'code' => '123',

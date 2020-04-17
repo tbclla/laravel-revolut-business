@@ -60,6 +60,28 @@ class TokenManager
 	}
 
 	/**
+	 * Store a new access token
+	 *
+	 * @param string $value
+	 * @return \tbclla\Revolut\Auth\AccessToken
+	 */
+	public function createAccessToken(string $value)
+	{
+		return $this->tokenRepository->createAccessToken($value);
+	}
+
+	/**
+	 * Store a new refresh token
+	 *
+	 * @param string $value
+	 * @return \tbclla\Revolut\Auth\RefreshToken
+	 */
+	public function createRefreshToken(string $value)
+	{
+		return $this->tokenRepository->createRefreshToken($value);
+	}
+
+	/**
 	 * Exchange a refresh token for a new access token
 	 *
 	 * @return \tbclla\Revolut\Auth\AccessToken
@@ -85,9 +107,9 @@ class TokenManager
 		$response = $this->accessTokenRequest->exchange($token);
 
 		if (isset($response['refresh_token'])) {
-			$this->tokenRepository->createRefreshToken($response['refresh_token']);
+			$this->createRefreshToken($response['refresh_token']);
 		}
 
-		return $this->tokenRepository->createAccessToken($response['access_token']);
+		return $this->createAccessToken($response['access_token']);
 	}
 }

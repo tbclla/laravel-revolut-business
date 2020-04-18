@@ -15,7 +15,7 @@ Read [Revolut's official documentation](https://revolut-engineering.github.io/ap
 
 ⚠️ **Please use a [sandbox account](https://sandbox-business.revolut.com/signup) when setting up this package, and only switch to your real-world account once you're happy that everything is working correclty.**
 
-## Requirements
+### Requirements
 
 - Laravel >=5.8
 - PHP >=7.2
@@ -23,7 +23,6 @@ Read [Revolut's official documentation](https://revolut-engineering.github.io/ap
 ### Installation
 
 Pull this package in through composer.
-This package will also pull in [firebase/php-jwt](https://github.com/firebase/php-jwt) and [guzzlehttp/guzzle](https://github.com/guzzle/guzzle).
 
 ```
 composer require tbclla/laravel-revolut-business
@@ -52,6 +51,13 @@ After you have installed the package, publish the configuration file.
 ```
 php artisan vendor:publish --provider "tbclla\Revolut\Providers\RevolutServiceProvider"
 ```
+
+You can now configure this package under `config/revolut.php`.
+
+#### Access Expiry
+
+As per [the official documentation](https://developer.revolut.com/docs/business-api/#getting-started-usage-and-limits), businesses on the Freelancer plan must explicitly authorise access to their account via the API every 90 days.
+If this applies to your business, set 'expire_api_access' to `true`.
 
 #### Credentials
 
@@ -92,7 +98,7 @@ Complete step 1 of Revolut's instructions to generate a key pair.<br>
 #### Step 2 - Upload your public key
 
 Follow Revolut's step 2 to upload your newly created public key and provide a redirect URI.<br>
-⚠️ You do NOT have to create a route or controller for this redirect URI, this package will handle it.
+⚠️ You do NOT have to create a route or controller for this redirect URI, this package will handle it.<br>
 ❗Add this redirect URI to your `.env` as `REVOLUT_REDIRECT_URI`.
 
 Revolut will now have created a client ID for you.<br>
@@ -226,7 +232,7 @@ Revolut::counterparty()->create([
 
 #### Build a counterparty
 
-Read more about builders and how to use them [here](https://github.com/tbclla/laravel-revolut#builders).
+Read more about builders and how to use them [here](https://github.com/tbclla/laravel-revolut-business#builders).
 
 ##### Build a Revolut counterparty
 
@@ -298,7 +304,7 @@ Revolut::transfer()->create([
 
 #### Build a transfer
 
-Read more about builders and how to use them [here](https://github.com/tbclla/laravel-revolut#builders).
+Read more about builders and how to use them [here](https://github.com/tbclla/laravel-revolut-business#builders).
 
 ```php
 $transfer = Revolut::transfer()->build()
@@ -334,7 +340,7 @@ Revolut::payment()->create([
 
 #### Build a payment
 
-Read more about builders and how to use them [here](https://github.com/tbclla/laravel-revolut#builders).
+Read more about builders and how to use them [here](https://github.com/tbclla/laravel-revolut-business#builders).
 
 ```php
 $payment = Revolut::payment()->build()
@@ -375,7 +381,7 @@ $filtered = Revolut::transaction()->all([
 ]);
 ```
 
-As per the offical documentation, transacations which are older than 90 days can only be accessed if your access token has been generated within the last 5 minutes. To handle this, you can pass an optional boolean value as a second parameter, indicating whether or not you would like to refresh the access token before making the request.
+As per the offical documentation, transacations which are older than 90 days can only be accessed if your access token has been generated within the last 5 minutes. To handle this, you can pass an optional boolean value as a second parameter, indicating whether or not to force the client to refresh the access token before making the request.
 
 ```php
 Revolut::transaction()->all([], true);
@@ -590,8 +596,7 @@ Client::generateRequestId();
 
 ### Authorization
 
-In accordance with [RFC6749 10.12](https://tools.ietf.org/html/rfc6749#section-10.12), this package implements CSRF protection for the `redirect_uri`.
-This package includes a controller to handle both the authorization request and subsequent response to enforce this.
+In accordance with [RFC6749 10.12](https://tools.ietf.org/html/rfc6749#section-10.12), this package implements CSRF protection for the `redirect_uri` and includes a controller to handle both the authorization request and subsequent response to enforce this.
 
 #### Authorization Request
 
@@ -660,7 +665,7 @@ This packages uses [Laravel's built-in encryption tools](https://laravel.com/doc
 #### Cache
 
 Tokens stored in your cache are only remembered for the duration of their validity, so there is no need to remove them.
-If you would like to remove tokens from your cache, you can 'forget()' them by their keys.
+If you would like to remove tokens from your cache, you can `forget()` them using their respective keys.
 ```php
 // remove access token
 Cache::forget('revolut_access_token');
@@ -670,7 +675,7 @@ Cache::forget('revolut_refresh_token');
 
 #### Database
 
-If you are using the database token driver, you can remove expired access tokens and refresh tokens from your database with the below artisan command.
+If you are using the database token store, you can remove expired access tokens and refresh tokens from your database with the below artisan command.
 
 ```
 php artisan revolut:cleanup

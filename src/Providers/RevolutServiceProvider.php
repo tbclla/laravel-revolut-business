@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use tbclla\Revolut\Auth\ClientAssertion;
 use tbclla\Revolut\Auth\Requests\AuthorizationCodeRequest;
 use tbclla\Revolut\Client;
+use tbclla\Revolut\Console\Commands\AccessTokenCommand;
 use tbclla\Revolut\Console\Commands\AuthorizeCommand;
 use tbclla\Revolut\Console\Commands\CleanupCommand;
 use tbclla\Revolut\Console\Commands\JWTCommand;
@@ -85,6 +86,7 @@ class RevolutServiceProvider extends ServiceProvider
                 CleanupCommand::class,
                 ResetCommand::class,
                 AuthorizeCommand::class,
+                AccessTokenCommand::class,
             ]);
         }
     }

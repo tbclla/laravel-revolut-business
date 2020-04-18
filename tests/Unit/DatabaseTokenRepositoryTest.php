@@ -16,7 +16,7 @@ class DatabaseTokenRepositoryTest extends TestCase
         $this->artisan('migrate');
 
         $this->repo = new DatabaseTokenRepository;
-        $this->table = config('revolut.tokens.table_name');
+        $this->table = config('revolut.tokens.database.table_name');
     }
 
     /** @test */

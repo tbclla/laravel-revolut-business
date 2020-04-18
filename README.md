@@ -11,7 +11,7 @@ A sister package for [Revolut's Merchant API](https://developer.revolut.com/docs
 
 ## Getting Started
 
-Read [Revolut's documentation](https://revolut-engineering.github.io/api-docs/business-api/#getting-started) to get familiar with the API and the authorization process.
+Read [Revolut's official documentation](https://revolut-engineering.github.io/api-docs/business-api) to get familiar with the API and the authorization process.
 
 ⚠️ **Please use a [sandbox account](https://sandbox-business.revolut.com/signup) when setting up this package, and only switch to your real-world account once you're happy that everything is working correclty.**
 
@@ -31,17 +31,17 @@ composer require tbclla/laravel-revolut-business
 
 ### Service Provider & Facade
 
-If you have disabled auto-discovery, add the service provider and facade to your `config/app.php`.
+If you have disabled Laravel's auto-discovery feature, add the service provider and facade to your `config/app.php`.
 
 ```php
 'providers' => [
-	// ...
-	tbclla\Revolut\Providers\RevolutServiceProvider::class,
+    // ...
+    tbclla\Revolut\Providers\RevolutServiceProvider::class,
 ],
 
 'aliases' => [
-	// ...
-	'Revolut' => tbclla\Revolut\Facades\Revolut::class,
+    // ...
+    'Revolut' => tbclla\Revolut\Facades\Revolut::class,
 ]
 ```
 
@@ -53,8 +53,10 @@ After you have installed the package, publish the configuration file.
 php artisan vendor:publish --provider "tbclla\Revolut\Providers\RevolutServiceProvider"
 ```
 
+#### Credentials
+
 Add the following keys to your `.env` file, as most of the configuration values are read from there.<br>
-You will complete the missing values as you go through the authorization process.
+You will complete the missing values as you [set up access to the API](https://github.com/tbclla/laravel-revolut-business#setting-up-access-to-the-api).
 
 ```
 REVOLUT_SANDBOX=true
@@ -63,18 +65,22 @@ REVOLUT_REDIRECT_URI=
 REVOLUT_CLIENT_ID=
 ```
 
-### Migration (Optional)
+#### Token store
 
-If you have set the `token_driver` in your config to 'database', you will need to create a table to store the tokens in.
-You can customise the name of this table in the config.
+Tokens can be stored in either your database or in your cache.
 
-To create the table, run your migrations.
+##### Cache
 
-```
-php artisan migrate
-```
+When using the 'cache' store, you may optionally define a `driver`. If set to null, your app's default cache driver (`config/cache.php > default`) will be used.
 
-### Setting up access to the API
+##### Database
+
+When using the 'database' store, a migration for the required table is automatically included when you run your migrations.
+The name of this table can be customised in the configuration.
+
+Run `php artisan migrate` to create the table.
+
+## Setting up access to the API
 
 Please follow steps 1 and 2 of [Revolut's documentation on how to set up access to the API](https://revolut-engineering.github.io/api-docs/business-api/#authentication-setting-up-access-to-your-business-account).
 
@@ -96,7 +102,7 @@ Revolut will now have created a client ID for you.<br>
 
 Skip this step, this package will generate a JWT for you whenever one is needed.<br>
 You can verify that you have configured everything correctly by generating a JWT via the below artisan command.
-Optionally, you can pass it the path to the matching public key via the `--public` flag, to validate the JWT.
+Optionally, you can pass it the path to the matching public key with the `--public` flag, to validate the JWT.
 
 ```
 php artisan revolut:jwt
@@ -106,27 +112,26 @@ php artisan revolut:jwt --public /Path/to/publickey.cer
 
 #### Steps 4-7
 
-You do not have to complete any of the remaining steps!
-
-Instead, generate an authorization request with the following artisan command, and follow the generated link.<br>
-Once Revolut has authorized your app, you will be redirected to the redirect uri which you have set in step 2.
-This package automatically creates a route to match this redirect uri, and includes a controller which will take care of retrieving the authorization code, and exchange it for an access and refresh token. Both tokens will be stored in your database.
+You do not have to complete any of the remaining steps!<br>
+Instead, initate the authorization with the following artisan command, and follow the generated link.
 
 ```
 php artisan revolut:authorize
 ```
 
 **To mitigate against CSRF attacks, requesting an authorization code via Revolut's web interface does _NOT_ work in conjunction with Laravel-Revolut!**
-Read more about the authorization process here.
+Read more about the authorization process [here](https://github.com/tbclla/laravel-revolut-business#authorization).
 
 #### Finishing up
 
-You should now have your first two records in your `revolut_tokens` table:
+An access and refresh token will now have been stored in your defined token store.
+This package will now use this access token until it expires, and request a new one from Revolut when needed, via the refresh token.
 
-- 1 refresh token
-- 1 access token.
+To verify that your app has been authorized, you can retrieve an access token with the below artisan command.
 
-Laravel-Revolut will now use this access token until it expires, and request a new one from Revolut when needed, via the refresh token.
+```
+php artisan revolut:access-token
+```
 
 ## Using the API
 
@@ -192,9 +197,9 @@ Please refer to [Revolut's documentation](https://revolut-engineering.github.io/
 
 ```php
 Revolut::counterparty()->create([
-	"profile_type" => "personal",
-	"name" => "John Smith",
-	"phone" => "+4412345678900"
+    "profile_type" => "personal",
+    "name" => "John Smith",
+    "phone" => "+4412345678900"
 ]);
 ```
 
@@ -202,20 +207,20 @@ Revolut::counterparty()->create([
 
 ```php
 Revolut::counterparty()->create([
-	"company_name" => "John Smith Co.",
-	"bank_country" => "GB",
-	"currency" => "GBP",
-	"account_no" => "12345678",
-	"sort_code" => "223344",
-	"email" => "test@sandboxcorp.com",
-	"address" => [
-		"street_line1" => "1 Canada Square",
-		"street_line2" => "Canary Wharf",
-		"region" => "East End",
-		"postcode" => "E115AB",
-		"city" => "London",
-		"country" => "GB"
-	]
+    "company_name" => "John Smith Co.",
+    "bank_country" => "GB",
+    "currency" => "GBP",
+    "account_no" => "12345678",
+    "sort_code" => "223344",
+    "email" => "test@sandboxcorp.com",
+    "address" => [
+        "street_line1" => "1 Canada Square",
+        "street_line2" => "Canary Wharf",
+        "region" => "East End",
+        "postcode" => "E115AB",
+        "city" => "London",
+        "country" => "GB"
+    ]
 ]);
 ```
 
@@ -245,10 +250,10 @@ Revolut::counterparty()->build()->business('test@sandboxcorp.com')->create();
 
 ```php
 $counterparty = Revolut::counterparty()->build()
-	->bankCountry('GB')
-	->currency('GBP')
-	->accountNumber('12345678')
-	->sortCode('223344');
+    ->bankCountry('GB')
+    ->currency('GBP')
+    ->accountNumber('12345678')
+    ->sortCode('223344');
 
 $counterparty->companyName('John Smith Co');
 
@@ -257,21 +262,21 @@ $counterparty->individualName('John', 'Smith');
 
 // The counterparty builder accepts the address as an array
 $counterparty->address([
-	"street_line1" => "1 Canada Square",
-	"street_line2" => "Canary Wharf",
-	"region" => "East End",
-	"postcode" => "E115AB",
-	"city" => "London",
-	"country" => "GB"
+    "street_line1" => "1 Canada Square",
+    "street_line2" => "Canary Wharf",
+    "region" => "East End",
+    "postcode" => "E115AB",
+    "city" => "London",
+    "country" => "GB"
 ]);
 
 // Alternatively, the builder lets you build the address fluently
 $counterparty->streetLine1('1 Canada Square')
-	->streetLine2('Canary Wharf')
-	->region('East End')
-	->postcode('E115AB')
-	->city('London')
-	->country('GB');
+    ->streetLine2('Canary Wharf')
+    ->region('East End')
+    ->postcode('E115AB')
+    ->city('London')
+    ->country('GB');
 ```
 
 ### Transfers
@@ -283,11 +288,11 @@ Please refer to [Revolut's documentation on how to create a transfer](https://re
 ```php
 
 Revolut::transfer()->create([
-	"request_id" => "e0cbf84637264ee082a848b",
-	"source_account_id" => "bdab1c20-8d8c-430d-b967-87ac01af060c",
-	"target_account_id" => "5138z40d1-05bb-49c0-b130-75e8cf2f7693",
-	"amount" => 123.11,
-	"currency" => "EUR",
+    "request_id" => "e0cbf84637264ee082a848b",
+    "source_account_id" => "bdab1c20-8d8c-430d-b967-87ac01af060c",
+    "target_account_id" => "5138z40d1-05bb-49c0-b130-75e8cf2f7693",
+    "amount" => 123.11,
+    "currency" => "EUR",
 ]);
 ```
 
@@ -297,10 +302,10 @@ Read more about builders and how to use them [here](https://github.com/tbclla/la
 
 ```php
 $transfer = Revolut::transfer()->build()
-	->sourceAccount($sourceAccountId)
-	->targetAccout($targetAccountId)
-	->amount(231.20)
-	->reference('payroll'); // optional
+    ->sourceAccount($sourceAccountId)
+    ->targetAccout($targetAccountId)
+    ->amount(231.20)
+    ->reference('payroll'); // optional
 
 // If you want to keep the request ID for your records, retrieve it from the builder
 $requestId = $transfer->request_id;
@@ -316,14 +321,14 @@ Please refer to [Revolut's documentation on how to create a payment](https://rev
 
 ```php
 Revolut::payment()->create([
-	"request_id" => "e0cbf84637264ee082a848b",
-	"account_id" => "bdab1c20-8d8c-430d-b967-87ac01af060c",
-	"receiver" =>[
-		"counterparty_id" => "5138z40d1-05bb-49c0-b130-75e8cf2f7693",
-		"account_id" => "db7c73d3-b0df-4e0e-8a9a-f42aa99f52ab"
-	],
-	"amount" => 123.11,
-	"currency" => "EUR",
+    "request_id" => "e0cbf84637264ee082a848b",
+    "account_id" => "bdab1c20-8d8c-430d-b967-87ac01af060c",
+    "receiver" =>[
+        "counterparty_id" => "5138z40d1-05bb-49c0-b130-75e8cf2f7693",
+        "account_id" => "db7c73d3-b0df-4e0e-8a9a-f42aa99f52ab"
+    ],
+    "amount" => 123.11,
+    "currency" => "EUR",
 ]);
 ```
 
@@ -333,11 +338,11 @@ Read more about builders and how to use them [here](https://github.com/tbclla/la
 
 ```php
 $payment = Revolut::payment()->build()
-	->account('bdab1c20-8d8c-430d-b967-87ac01af060c')
-	->receiver('5138z40d1-05bb-49c0-b130-75e8cf2f7693')
-	->amount(93.12)
-	->currency('USD')
-	->create();
+    ->account('bdab1c20-8d8c-430d-b967-87ac01af060c')
+    ->receiver('5138z40d1-05bb-49c0-b130-75e8cf2f7693')
+    ->amount(93.12)
+    ->currency('USD')
+    ->create();
 ```
 
 #### Schedule a payment
@@ -365,8 +370,8 @@ Please refer to [Revolut's documentation](https://revolut-engineering.github.io/
 $transactions = Revolut::transaction()->all();
 
 $filtered = Revolut::transaction()->all([
-	'count' => 200,
-	'type' => 'card_payment',
+    'count' => 200,
+    'type' => 'card_payment',
 ]);
 ```
 
@@ -411,19 +416,19 @@ Revolut::paymentDraft()->delete($id);
 
 ```php
 Revolut::paymentDraft()->create([
-	"title": "Sample title",
-	"schedule_for": '2020-05-29',
-	"payments" => [
-		[
-			"currency" => "EUR",
-			"amount" => 123,
-			"account_id" => "db7c73d3-b0df-4e0e-8a9a-f42aa99f52ab",
-			"receiver" => [
-				"counterparty_id" => "5138z40d1-05bb-49c0-b130-75e8cf2f7693",
-				"account_id" => "bdab1c20-8d8c-430d-b967-87ac01af060c"
-			],
-		]
-	]
+    "title": "Sample title",
+    "schedule_for": '2020-05-29',
+    "payments" => [
+        [
+            "currency" => "EUR",
+            "amount" => 123,
+            "account_id" => "db7c73d3-b0df-4e0e-8a9a-f42aa99f52ab",
+            "receiver" => [
+                "counterparty_id" => "5138z40d1-05bb-49c0-b130-75e8cf2f7693",
+                "account_id" => "bdab1c20-8d8c-430d-b967-87ac01af060c"
+            ],
+        ]
+    ]
 ]);
 ```
 
@@ -434,12 +439,12 @@ When building a payment draft, the payments can either be set by passing an arra
 $date = now()->addDays(7)->format('Y-m-d');
 
 $draft = Revolut::paymentDraft()->build()
-	->title('Sample title')
-	->schedule($date)
-	->payments($payments);
+    ->title('Sample title')
+    ->schedule($date)
+    ->payments($payments);
 
 foreach ($employees as $employee) {
-	$draft->addPayment($payment);
+    $draft->addPayment($payment);
 }
 
 $draft->create()
@@ -464,17 +469,17 @@ Revolut::rate()->get('USD', 'GBP', 143.23);
 
 ```php
 Revolut::exchange()->create([
-	"from" => [
-		"account_id" => "d56dd396-523b-4613-8cc7-54974c17bcac",
-		"currency" => "USD",
-		"amount" => 135.25
-	],
-	"to": [
-		"account_id" => "a44dd365-523b-4613-8457-54974c8cc7ac",
-		"currency" => "EUR"
-	],
-	"reference" => "Time to sell",
-	"request_id" => Revolut::generateRequestId(),
+    "from" => [
+        "account_id" => "d56dd396-523b-4613-8cc7-54974c17bcac",
+        "currency" => "USD",
+        "amount" => 135.25
+    ],
+    "to": [
+        "account_id" => "a44dd365-523b-4613-8457-54974c8cc7ac",
+        "currency" => "EUR"
+    ],
+    "reference" => "Time to sell",
+    "request_id" => Revolut::generateRequestId(),
 ]);
 ```
 
@@ -482,9 +487,9 @@ Revolut::exchange()->create([
 
 ```php
 $exchange = Revolut::exchange()->build()
-	->reference('Time to sell')
-	->from('d56dd396-523b-4613-8cc7-54974c17bcac', 'USD', 135.25)
-	->to('a44dd365-523b-4613-8457-54974c8cc7ac', 'EUR');
+    ->reference('Time to sell')
+    ->from('d56dd396-523b-4613-8cc7-54974c17bcac', 'USD', 135.25)
+    ->to('a44dd365-523b-4613-8457-54974c8cc7ac', 'EUR');
 
 $response = $exchange->create()
 ```
@@ -524,27 +529,27 @@ For example:
 
 ```php
 Revolut::exchange()->build()
-	->from('d56dd396-523b-4613-8cc7-54974c17bcac', 'USD')
-	->to('a44dd365-523b-4613-8457-54974c8cc7ac', 'EUR', 735.23)
-	->reference('Off to France!')
-	->toArray();
+    ->from('d56dd396-523b-4613-8cc7-54974c17bcac', 'USD')
+    ->to('a44dd365-523b-4613-8457-54974c8cc7ac', 'EUR', 735.23)
+    ->reference('Off to France!')
+    ->toArray();
 ```
 
 Will return:
 
 ```
 [
-	'from' => [
-		'account_id' => 'd56dd396-523b-4613-8cc7-54974c17bcac',
-		'currency' => 'USD'
-	],
-	'to' => [
-		'account_id' => 'a44dd365-523b-4613-8457-54974c8cc7ac',
-		'currency' => 'EUR',
-		'amount' => 735.23,
-	],
-	'reference' => 'Off to France!',
-	'request_id' => 'c60ec5b3-c5b9-4cea-936c-fa0306374df5'
+    'from' => [
+        'account_id' => 'd56dd396-523b-4613-8cc7-54974c17bcac',
+        'currency' => 'USD'
+    ],
+    'to' => [
+        'account_id' => 'a44dd365-523b-4613-8457-54974c8cc7ac',
+        'currency' => 'EUR',
+        'amount' => 735.23,
+    ],
+    'reference' => 'Off to France!',
+    'request_id' => 'c60ec5b3-c5b9-4cea-936c-fa0306374df5'
 ]
 ```
 
@@ -554,10 +559,10 @@ When you are done building, you can simply call the `create()` method on the bui
 
 ```php
 Revolut::transfer()->build()
-	->sourceAccount('bdab1c20-8d8c-430d-b967-87ac01af060c')
-	->targetAccout('5138z40d1-05bb-49c0-b130-75e8cf2f7693')
-	->amount(231.20)
-	->create();
+    ->sourceAccount('bdab1c20-8d8c-430d-b967-87ac01af060c')
+    ->targetAccout('5138z40d1-05bb-49c0-b130-75e8cf2f7693')
+    ->amount(231.20)
+    ->create();
 ```
 
 ## Request ID's
@@ -605,7 +610,9 @@ You may pass it an optional 'after_success' paramater which will redirect the us
 ```php
 $url = route('revolut-authorize');
 
-$url = route('revolut-authorize', ['after_success' => route('home')]);
+$url = route('revolut-authorize', [
+    'after_success' => route('home')
+]);
 
 return redirect($url);
 ```
@@ -619,7 +626,9 @@ Route::get('/accounts', function () {
     try {
         return Revolut::account()->all();
     } catch(AppUnauthorizedException $e) {
-        return redirect(route('revolut-authorization', ['after_success' => '/accounts']));
+        return redirect(route('revolut-authorization', [
+            'after_success' => '/accounts'
+        ]));
     }
 });
 ```
@@ -639,7 +648,7 @@ If no location was provided, the controller will return a `200` response instead
 
 This package will store access and refresh tokens in either your database or the cache.
 Authorization codes are never stored and are instead exchanged for tokens immediately.
-To configure the token driver, visit your `config/revolut.php`.
+You can configure the token driver in your `config/revolut.php` file.
 
 ### Token Encryption
 

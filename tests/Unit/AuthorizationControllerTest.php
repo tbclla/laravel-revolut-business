@@ -35,7 +35,9 @@ class AuthorizationControllerTest extends TestCase
 
         $controller->create($request, $authCodeRequest);
 
-        $this->assertEquals($url, session($state));
+        $this->assertEquals([
+            'redirect_uri' => $url
+        ], session($state));
     }
 
     /** @test */

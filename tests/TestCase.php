@@ -21,7 +21,7 @@ abstract class TestCase extends BaseTestCase
     {
         $app['config']->set('revolut.sandbox', true);
         $app['config']->set('revolut.tokens.encrypt', true);
-        $app['config']->set('revolut.tokens.table_name', 'revolut_tokens');
+        $app['config']->set('revolut.tokens.database.table_name', 'revolut_tokens');
         $app['config']->set('revolut.client_id', env('REVOLUT_CLIENT_ID'));
         $app['config']->set('revolut.private_key', env('REVOLUT_PRIVATE_KEY'));
         $app['config']->set('revolut.redirect_uri', env('REVOLUT_REDIRECT_URI'));

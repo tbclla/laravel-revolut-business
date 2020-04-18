@@ -69,7 +69,7 @@ abstract class Token extends Model
      */
     public function getTable()
     {
-        return config('revolut.tokens.table_name');
+        return config('revolut.tokens.database.table_name');
     }
 
     /**

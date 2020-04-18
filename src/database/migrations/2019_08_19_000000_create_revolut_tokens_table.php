@@ -13,7 +13,7 @@ class CreateRevolutTokensTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('revolut.tokens.table_name'), function(Blueprint $table) {
+        Schema::create(config('revolut.tokens.database.table_name'), function(Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('type');
             $table->mediumText('value');
@@ -30,6 +30,6 @@ class CreateRevolutTokensTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(config('revolut.tokens.table_name'));
+        Schema::dropIfExists(config('revolut.tokens.database.table_name'));
     }
 }

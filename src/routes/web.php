@@ -18,7 +18,7 @@ Route::group(['namespace' => 'tbclla\Revolut\Controllers', 'middleware' => ['web
     $route = parse_url(config('revolut.redirect_uri'))['path'];
 
     Route::get($route . '/create', 'AuthorizationController@create')
-        ->middleware(config('revolut.auth_route.middleware'))
+        ->middleware(config('revolut.auth_route.middleware', []))
         ->name(config('revolut.auth_route.name'));
 
     Route::get($route, 'AuthorizationController@store');

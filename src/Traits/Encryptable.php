@@ -12,7 +12,7 @@ trait Encryptable
 	 */
 	public function setValueAttribute(string $value)
 	{
-		$encrypt = config('revolut.encrypt_tokens', true);
+		$encrypt = config('revolut.tokens.encrypt', true);
 		
 		$this->attributes['value'] = $encrypt ? encrypt($value) : $value;
 		$this->attributes['is_encrypted'] = $encrypt;

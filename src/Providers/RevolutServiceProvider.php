@@ -2,6 +2,7 @@
 
 namespace tbclla\Revolut\Providers;
 
+use Illuminate\Contracts\Cache\Factory as CacheFactory;
 use Illuminate\Support\ServiceProvider;
 use tbclla\Revolut\Auth\ClientAssertion;
 use tbclla\Revolut\Auth\Requests\AuthorizationCodeRequest;
@@ -25,8 +26,15 @@ class RevolutServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
+		$this->app->bind(CacheTokenRepository::class, function() {
+			return new CacheTokenRepository(
+				resolve(CacheFactory::class),
+				config('revolut.tokens.cache.driver')
+			);
+		});
+
 		$this->app->bind(TokenRepository::class, function() {
-			return config('revolut.token_driver') === 'database'
+			return config('revolut.tokens.store') === 'database'
 				? new DatabaseTokenRepository
 				:  resolve(CacheTokenRepository::class);
 		});
@@ -65,7 +73,7 @@ class RevolutServiceProvider extends ServiceProvider
 			__DIR__ . '/../config/revolut.php' => config_path('revolut.php')
 		]);
 
-		if (config('revolut.token_driver') === 'database') {
+		if (config('revolut.tokens.store') === 'database') {
 			$this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 		}
 		

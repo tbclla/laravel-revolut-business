@@ -49,7 +49,39 @@ return [
     | necessary route and controllers.
     |
     */
-	'redirect_uri' => env('REVOLUT_REDIRECT_URI'),
+    'redirect_uri' => env('REVOLUT_REDIRECT_URI'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Tokens
+    |--------------------------------------------------------------------------
+    |
+    | Configue where and how Revolut's access and refresh tokens are stored.
+    |
+    | When using the 'database' store, an additonal migration for the defined
+    | table will be included automatically whenever you run your migrations.
+    |
+    | When using the 'cache' store, a cache driver may be specified. If the
+    | cache driver is set to null, the default driver defined in Laravel's
+    | 'config/cache.php' will be used.
+    | 
+    | Supported stores: 'database', 'cache'
+    |
+    */
+    'tokens' => [
+
+        'encrypt' => true,
+
+        'store' => 'database',
+
+        'database' => [
+            'table_name' => 'revolut_tokens'
+        ],
+
+        'cache' => [
+            'driver' => null,
+        ],
+    ],
 
 	/*
     |--------------------------------------------------------------------------
@@ -70,41 +102,4 @@ return [
 			// 'auth'
 		]
 	],
-
-	/*
-	|--------------------------------------------------------------------------
-	| Token Driver
-	|--------------------------------------------------------------------------
-	|
-	| Configure how access and refresh tokens are stored.
-	| The available options are 'database' or 'cache'.
-    |
-    | 'cache' will use your app's configured cache driver.
-    | 'database' requires a table to store the tokens. The name of this
-    | 'tokens_table' can be configured in the following section.
-	*/
-	'token_driver' => 'database',
-
-	/*
-	|--------------------------------------------------------------------------
-	| Tokens table
-	|--------------------------------------------------------------------------
-	|
-    | Set the name of the table that will hold your Revolut tokens.
-    | This table is only required when the 'token_driver' is set to 'database'.
-	|
-	*/
-	'tokens_table' => 'revolut_tokens',
-
-	/*
-    |--------------------------------------------------------------------------
-    | Encryption
-    |--------------------------------------------------------------------------
-    |
-    | Define whether or not to encrypt tokens before storing them.
-    | It is recommended to keep the encryption turned on, especially in the
-    | production environment
-    |
-    */
-	'encrypt_tokens' => true,
 ];

@@ -6,7 +6,7 @@ use tbclla\Revolut\Auth\AccessToken;
 use tbclla\Revolut\Auth\RefreshToken;
 use tbclla\Revolut\Interfaces\PersistableToken;
 use tbclla\Revolut\Interfaces\TokenRepository;
-use Illuminate\Cache\Repository as Cache;
+use Illuminate\Contracts\Cache\Factory as CacheFactory;
 
 class CacheTokenRepository implements TokenRepository
 {
@@ -18,21 +18,30 @@ class CacheTokenRepository implements TokenRepository
 	const PREFIX = 'revolut_';
 
 	/**
-	 * @param \Illuminate\Cache\Repository $cache
+	 * A cache repository
+	 * 
+	 * @var \Illuminate\Cache\Repository
 	 */
-	public function __construct(Cache $cache)
+	private $cache;
+
+	/**
+	 * @param \Illuminate\Contracts\Cache\Factory $cache
+	 * @param string $driver
+	 * @return void
+	 */
+	public function __construct(CacheFactory $cache, string $driver = null)
 	{
-		$this->cache = $cache;
+		$this->cache = $cache->store($driver);
 	}
 
 	public function getAccessToken()
 	{
-		return $this->getToken(AccessToken::TYPE);
+		return $this->cache->get($this->getKey(AccessToken::TYPE));
 	}
 
 	public function getRefreshToken()
 	{
-		return $this->getToken(RefreshToken::TYPE);
+		return $this->cache->get($this->getKey(RefreshToken::TYPE));
 	}
 
 	public function createAccessToken(string $value)
@@ -51,17 +60,6 @@ class CacheTokenRepository implements TokenRepository
 		]));
 
 		return $refreshToken;
-	}
-
-	/**
-	 * Get a token from the cache
-	 *
-	 * @param string $type
-	 * @return \tbclla\Revolut\Interfaces\PersistableToken|null
-	 */
-	private function getToken($type)
-	{
-		return $this->cache->get($this->getKey($type));
 	}
 
 	/**

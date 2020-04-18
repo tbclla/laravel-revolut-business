@@ -28,7 +28,7 @@ class ResetCommand extends Command
 	 */
 	public function handle()
 	{
-		$table = config('revolut.tokens_table');
+		$table = config('.revolut.tokens.table_name');
 
 		if ($this->confirm('All Revolut tokens will be deleted permanently. Are you sure?')) {
 			DB::table($table)->truncate();

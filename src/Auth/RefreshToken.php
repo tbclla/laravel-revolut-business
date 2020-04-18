@@ -39,7 +39,9 @@ class RefreshToken extends Token implements GrantsAccessTokens, PersistableToken
 
     public static function getExpiration()
     {
-        return null;
+        return config('revolut.expire_api_access', false)
+            ? self::PSD2expiration()
+            : null;
     }
 
     /**
@@ -52,5 +54,23 @@ class RefreshToken extends Token implements GrantsAccessTokens, PersistableToken
         $latest = self::latest()->select('id')->first();
 
         return (int) self::where('id', '!=', $latest->id)->delete();
+    }
+
+    /**
+     * Calculate the expiration date 
+     * 
+     * An expiration should be set if the account is subject to PSD2 regulation,
+     * under which access to the API expires after 90 days.
+     * When access to the API expires, existing access tokens may be revoked.
+     * The refresh token should be treated as expired premajurely, to prevent it from
+     * being used to request access tokens which may be revoked before their default
+     * lifetime has expired.
+     *
+     * @see https://developer.revolut.com/docs/business-api/#getting-started-usage-and-limits
+     * @return \Carbon\Carbon
+     */
+    private static function PSD2expiration()
+    {
+        return now()->addDays(90)->subMinutes(AccessToken::TTL);
     }
 }

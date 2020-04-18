@@ -1,6 +1,17 @@
 <?php
 
 return [
+    /*
+    |--------------------------------------------------------------------------
+    | API Access
+    |--------------------------------------------------------------------------
+    |
+    | Businesses on the Freelancer plan must explicitly authorize to access to
+    | the API every 90 days due to PSD2 SCA regulations.
+    | If this applies to your Business, set 'expire_api_access' to true.
+    |
+    */
+    'expire_api_access' => true,
 
     /*
     |--------------------------------------------------------------------------

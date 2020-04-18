@@ -15,7 +15,7 @@ class DatabaseTokenRepository implements TokenRepository
 
     public function getRefreshToken()
     {
-        return RefreshToken::orderBy('id', 'desc')->first();
+        return RefreshToken::active()->orderBy('id', 'desc')->first();
     }
 
     public function createAccessToken(string $value)

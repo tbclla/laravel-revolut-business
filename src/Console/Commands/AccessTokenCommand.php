@@ -31,7 +31,7 @@ class AccessTokenCommand extends Command
     {
         try {
             $accessToken = $manager->getAccessToken();
-        } catch(AppUnauthorizedException $e) {
+        } catch (AppUnauthorizedException $e) {
             $this->error('No valid refresh token found.');
             $this->line("calling 'revolut:authorize' to re-authorize...");
             return $this->call('revolut:authorize');

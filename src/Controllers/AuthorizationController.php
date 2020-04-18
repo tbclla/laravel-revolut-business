@@ -18,7 +18,9 @@ class AuthorizationController extends Controller
     public function create(Request $request, AuthorizationCodeRequest $authRequest)
     {
         // store the state and an optional redirect url
-        session([$authRequest->state => $request->after_success ?? false]);
+        session()->put($authRequest->state, [
+            'redirect_uri' => $request->after_success
+        ]);
 
         // redirect to Revolut's OAuth flow
         return redirect($authRequest->build());
@@ -45,10 +47,10 @@ class AuthorizationController extends Controller
         
         $tokenManager->requestAccessToken($authCode);
 
-        $redirect = session()->get($request->state);
-
-        session()->forget($request->state);
-
+        $state = session()->pull($request->state);
+        
+        $redirect = $state['redirect_uri'];
+        
         return $redirect
             ? redirect($redirect)
             : response('Authorization successful', 200);

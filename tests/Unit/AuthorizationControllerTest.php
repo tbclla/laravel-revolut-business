@@ -111,7 +111,9 @@ class AuthorizationControllerTest extends TestCase
             'state' => '123',
         ]);
 
-        session(['123' => false]);
+        session()->put('123', [
+            'redirect_uri' => null
+        ]);
 
         $controller = new AuthorizationController;
 

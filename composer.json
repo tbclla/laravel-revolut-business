@@ -22,7 +22,7 @@
                 "tbclla\\Revolut\\Providers\\RevolutServiceProvider"
             ],
             "aliases": {
-                "Revolut": "tbclla\\Revoulut\\Facades\\Revolut"
+                "Revolut": "tbclla\\Revolut\\Facades\\Revolut"
             }
         }
     },

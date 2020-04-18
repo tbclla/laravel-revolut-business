@@ -10,80 +10,81 @@ use Illuminate\Contracts\Cache\Factory as CacheFactory;
 
 class CacheTokenRepository implements TokenRepository
 {
-	/**
-	 * The cache key prefix
-	 * 
-	 * @var string
-	 */
-	const PREFIX = 'revolut_';
+    /**
+     * The cache key prefix
+     * 
+     * @var string
+     */
+    const PREFIX = 'revolut_';
 
-	/**
-	 * A cache repository
-	 * 
-	 * @var \Illuminate\Cache\Repository
-	 */
-	private $cache;
+    /**
+     * A cache repository
+     * 
+     * @var \Illuminate\Cache\Repository
+     */
+    private $cache;
 
-	/**
-	 * @param \Illuminate\Contracts\Cache\Factory $cache
-	 * @param string $driver
-	 * @return void
-	 */
-	public function __construct(CacheFactory $cache, string $driver = null)
-	{
-		$this->cache = $cache->store($driver);
-	}
+    /**
+     * @param \Illuminate\Contracts\Cache\Factory $cache
+     * @param string $driver
+     * @return void
+     */
+    public function __construct(CacheFactory $cache, string $driver = null)
+    {
+        $this->cache = $cache->store($driver);
+    }
 
-	public function getAccessToken()
-	{
-		return $this->cache->get($this->getKey(AccessToken::TYPE));
-	}
+    public function getAccessToken()
+    {
+        return $this->cache->get($this->getKey(AccessToken::TYPE));
+    }
 
-	public function getRefreshToken()
-	{
-		return $this->cache->get($this->getKey(RefreshToken::TYPE));
-	}
+    public function getRefreshToken()
+    {
+        return $this->cache->get($this->getKey(RefreshToken::TYPE));
+    }
 
-	public function createAccessToken(string $value)
-	{
-		$this->createToken($accessToken = new AccessToken([
-			'value' => $value
-		]));
+    public function createAccessToken(string $value)
+    {
+        $this->createToken($accessToken = new AccessToken([
+            'value' => $value
+        ]));
 
-		return $accessToken;
-	}
+        return $accessToken;
+    }
 
-	public function createRefreshToken(string $value)
-	{
-		$this->createToken($refreshToken = new RefreshToken([
-			'value' => $value
-		]));
+    public function createRefreshToken(string $value)
+    {
+        $this->createToken($refreshToken = new RefreshToken([
+            'value' => $value
+        ]));
 
-		return $refreshToken;
-	}
+        return $refreshToken;
+    }
 
-	/**
-	 * Put the token into the cache
-	 * 
-	 * @param \tbclla\Revolut\Interfaces\PersistableToken $token
-	 */
-	private function createToken(PersistableToken $token)
-	{
-		$this->cache->put(
-			$this->getKey($token->getType()),
-			$token,
-			$token->getExpiration()
-		);
-	}
+    /**
+     * Put the token into the cache
+     * 
+     * @param \tbclla\Revolut\Interfaces\PersistableToken $token
+     * @return void
+     */
+    private function createToken(PersistableToken $token)
+    {
+        $this->cache->put(
+            $this->getKey($token->getType()),
+            $token,
+            $token->getExpiration()
+        );
+    }
 
-	/**
-	 * Get the cache key
-	 *
-	 * @param string $type
-	 * @return string
-	 */
-	public function getKey(string $type)
-	{
-		return self::PREFIX . $type;
-	}
+    /**
+     * Get the cache key
+     *
+     * @param string $type
+     * @return string
+     */
+    public function getKey(string $type)
+    {
+        return self::PREFIX . $type;
+    }
 }

@@ -1,32 +1,32 @@
 {
-	"name": "tbclla/laravel-revolut-business",
-	"description": "An unofficial Laravel wrapper for Revolut's Open API for Business",
-	"license": "MIT",
-	"require": {
-		"firebase/php-jwt": "^5.2",
-		"guzzlehttp/guzzle": "^6.5"
-	},
-	"autoload": {
-		"psr-4": {
-			"tbclla\\Revolut\\": "src/"
-		}
-	},
-	"autoload-dev": {
-        "psr-4": {
-			"tbclla\\Revolut\\Tests\\": "tests/"
-		}
+    "name": "tbclla/laravel-revolut-business",
+    "description": "An unofficial Laravel wrapper for Revolut's Open API for Business",
+    "license": "MIT",
+    "require": {
+        "firebase/php-jwt": "^5.2",
+        "guzzlehttp/guzzle": "^6.5"
     },
-	"extra": {
-		"laravel": {
-			"providers": [
-				"tbclla\\Revolut\\Providers\\RevolutServiceProvider"
-			],
-			"aliases": {
-				"Revolut": "tbclla\\Revoulut\\Facades\\Revolut"
-			}
-		}
-	},
-	"require-dev": {
-		"orchestra/testbench": "^5.1"
-	}
+    "autoload": {
+        "psr-4": {
+            "tbclla\\Revolut\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "tbclla\\Revolut\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "tbclla\\Revolut\\Providers\\RevolutServiceProvider"
+            ],
+            "aliases": {
+                "Revolut": "tbclla\\Revoulut\\Facades\\Revolut"
+            }
+        }
+    },
+    "require-dev": {
+        "orchestra/testbench": "^5.1"
+    }
 }

@@ -4,5 +4,5 @@ namespace tbclla\Revolut\Tests;
 
 class ExampleMiddleware
 {
-	public function handle() {}
+    public function handle() {}
 }

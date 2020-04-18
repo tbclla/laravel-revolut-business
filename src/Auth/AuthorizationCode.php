@@ -6,35 +6,35 @@ use tbclla\Revolut\Interfaces\GrantsAccessTokens;
 
 class AuthorizationCode implements GrantsAccessTokens
 {
-	/**
-	 * The token value
-	 * 
-	 * @var string
-	 */
-	public $value;
+    /**
+     * The token value
+     * 
+     * @var string
+     */
+    public $value;
 
-	/**
-	 * Create a new authorization code instance
-	 * 
-	 * @param string $value The authorization code supplied by Revolut
-	 */
-	public function __construct(string $value)
-	{
-		$this->value = $value;
-	}
+    /**
+     * Create a new authorization code instance
+     * 
+     * @param string $value The authorization code supplied by Revolut
+     */
+    public function __construct(string $value)
+    {
+        $this->value = $value;
+    }
 
-	public function getValue()
-	{
-		return $this->value;
-	}
+    public function getValue()
+    {
+        return $this->value;
+    }
 
-	public static function getType()
-	{
-		return 'code';
-	}
+    public static function getType()
+    {
+        return 'code';
+    }
 
-	public static function getGrantType()
-	{
-		return 'authorization_code';
-	}
+    public static function getGrantType()
+    {
+        return 'authorization_code';
+    }
 }

@@ -2,7 +2,7 @@
 
 return [
 
-	/*
+    /*
     |--------------------------------------------------------------------------
     | Environment
     |--------------------------------------------------------------------------
@@ -11,21 +11,21 @@ return [
     | Default is true.
     |
     */
-	'sandbox' => env('REVOLUT_SANDBOX', true),
+    'sandbox' => env('REVOLUT_SANDBOX', true),
 
-	/*
+    /*
     |--------------------------------------------------------------------------
     | Private Key Path
     |--------------------------------------------------------------------------
     |
-	| Set the path to your private key.
+    | Set the path to your private key.
     | You must supply the corresponding public key to Revolut during the
     | authorization process.
     |
     */
-	'private_key' => env('REVOLUT_PRIVATE_KEY'),
+    'private_key' => env('REVOLUT_PRIVATE_KEY'),
 
-	/*
+    /*
     |--------------------------------------------------------------------------
     | Client ID
     |--------------------------------------------------------------------------
@@ -35,9 +35,9 @@ return [
     | selecting the relevant API certificate.
     |
     */
-	'client_id' => env('REVOLUT_CLIENT_ID'),
+    'client_id' => env('REVOLUT_CLIENT_ID'),
 
-	/*
+    /*
     |--------------------------------------------------------------------------
     | Oauth Redirect URI
     |--------------------------------------------------------------------------
@@ -83,23 +83,23 @@ return [
         ],
     ],
 
-	/*
+    /*
     |--------------------------------------------------------------------------
     | Authorization Route
     |--------------------------------------------------------------------------
     |
     | Configure the authorization route, which is used to initate Revolut's
-	| authorization process. 
-	| The 'web' middleware is required for sessions to work reliably and is
-	| therefore applied automatically and does not need to be specified
+    | authorization process. 
+    | The 'web' middleware is required for sessions to work reliably and is
+    | therefore applied automatically and does not need to be specified
     |
     */
-	'auth_route' => [
+    'auth_route' => [
 
-		'name' => 'revolut-authorization',
-		
-		'middleware' => [
-			// 'auth'
-		]
-	],
+        'name' => 'revolut-authorization',
+        
+        'middleware' => [
+            // 'auth'
+        ]
+    ],
 ];

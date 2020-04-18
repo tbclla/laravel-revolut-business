@@ -9,57 +9,57 @@ use tbclla\Revolut\Repositories\CacheTokenRepository;
 
 class CacheTokenRepositoryTest extends TestCase
 {
-	/**
-	 * Setup the test environment.
-	 */
-	protected function setUp(): void
-	{
-		parent::setUp();
+    /**
+     * Setup the test environment.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
 
-		$this->repo = resolve(CacheTokenRepository::class);
-	}
+        $this->repo = resolve(CacheTokenRepository::class);
+    }
 
-	/** @test */
-	public function a_cache_token_repository_can_create_an_access_token()
-	{
-		$key = $this->repo->getKey(AccessToken::TYPE);
+    /** @test */
+    public function a_cache_token_repository_can_create_an_access_token()
+    {
+        $key = $this->repo->getKey(AccessToken::TYPE);
 
-		$this->repo->createAccessToken('example_value');
+        $this->repo->createAccessToken('example_value');
 
-		$this->assertTrue(Cache::has($key));
-	}
+        $this->assertTrue(Cache::has($key));
+    }
 
-	/** @test */
-	public function a_cache_token_repository_can_get_an_access_token()
-	{
-		$value = md5(time());
+    /** @test */
+    public function a_cache_token_repository_can_get_an_access_token()
+    {
+        $value = md5(time());
 
-		$this->repo->createAccessToken($value);
+        $this->repo->createAccessToken($value);
 
-		$accessToken = $this->repo->getAccessToken();
+        $accessToken = $this->repo->getAccessToken();
 
-		$this->assertEquals($value, $accessToken->value);
-	}
+        $this->assertEquals($value, $accessToken->value);
+    }
 
-	/** @test */
-	public function a_cache_token_repository_can_create_a_refresh_token()
-	{
-		$key = $this->repo->getKey(RefreshToken::TYPE);
+    /** @test */
+    public function a_cache_token_repository_can_create_a_refresh_token()
+    {
+        $key = $this->repo->getKey(RefreshToken::TYPE);
 
-		$this->repo->createRefreshToken('example_value');
+        $this->repo->createRefreshToken('example_value');
 
-		$this->assertTrue(Cache::has($key));
-	}
+        $this->assertTrue(Cache::has($key));
+    }
 
-	/** @test */
-	public function a_cache_token_repository_can_get_a_refresh_token()
-	{
-		$value = md5(time());
+    /** @test */
+    public function a_cache_token_repository_can_get_a_refresh_token()
+    {
+        $value = md5(time());
 
-		$this->repo->createRefreshToken($value);
+        $this->repo->createRefreshToken($value);
 
-		$refreshToken = $this->repo->getRefreshToken();
+        $refreshToken = $this->repo->getRefreshToken();
 
-		$this->assertEquals($value, $refreshToken->value);
-	}
+        $this->assertEquals($value, $refreshToken->value);
+    }
 }

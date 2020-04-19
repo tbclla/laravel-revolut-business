@@ -11,7 +11,7 @@ return [
     | If this applies to your Business, set 'expire_api_access' to true.
     |
     */
-    'expire_api_access' => true,
+    'expire_api_access' => false,
 
     /*
     |--------------------------------------------------------------------------

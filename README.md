@@ -7,7 +7,7 @@
 # Laravel-Revolut (Business)
 
 An unofficial Laravel wrapper for [Revolut's Open API for Business](https://www.revolut.com/open-api).<br>
-A sister package for [Revolut's Merchant API](https://developer.revolut.com/docs/merchant-api) can be found [here](https://github.com/tbclla/laravel-revolut-merchant).
+A sister package for [Revolut's Merchant API](https://developer.revolut.com/docs/merchant-api/#introduction-to-merchant-accounts) can be found [here](https://github.com/tbclla/laravel-revolut-merchant).
 
 ## Getting Started
 
